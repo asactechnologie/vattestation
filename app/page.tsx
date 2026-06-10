@@ -1,19 +1,18 @@
-import { Button } from "@/components/ui/button"
+"use client"
+
+import dynamic from "next/dynamic"
+import { Loader2 } from "lucide-react"
+
+// Dynamically import the dashboard with SSR disabled to ensure client-side only execution
+const Dashboard = dynamic(() => import("@/components/dashboard").then(mod => mod.Dashboard), {
+  ssr: false,
+  loading: () => (
+    <div className="flex min-h-svh items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <Loader2 className="w-8 h-8 text-primary animate-spin" />
+    </div>
+  ),
+})
 
 export default function Page() {
-  return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
-  )
+  return <Dashboard />
 }
