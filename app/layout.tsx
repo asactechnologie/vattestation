@@ -1,15 +1,33 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
+import type { Metadata, Viewport } from "next"
+import { Manrope, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { PwaInitializer } from "@/components/pwa-initializer"
+import { cn } from "@/lib/utils"
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
+
+export const metadata: Metadata = {
+  title: "ASAC Insurance Verifier",
+  description: "Check the validity of your insurance certificate (attestation) instantly.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "ASAC Verifier",
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#0a568c",
+  width: "device-width",
+  initialScale: 1,
+}
 
 export default function RootLayout({
   children,
@@ -20,10 +38,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+      className={cn("antialiased", fontMono.variable, "font-sans", manrope.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <PwaInitializer />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

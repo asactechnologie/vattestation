@@ -72,5 +72,12 @@
     "childState": "State",
     "childValidity": "Validity",
     "close": "Close"
+  },
+  "pwa": {
+    "promptTitle": "Desktop & Mobile App",
+    "promptMessage": "Install ASAC vAttestation on your device for easy access, a greater experience, and better performance.",
+    "installButton": "Install Now",
+    "dismissButton": "Maybe Later",
+    "iosTip": "To install: tap the share button and select 'Add to Home Screen'."
   }
 }

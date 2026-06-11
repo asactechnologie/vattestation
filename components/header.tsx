@@ -30,7 +30,7 @@ export function Header() {
               ASAC
             </span>
             <span className="text-[10px] block text-primary font-semibold tracking-widest -mt-1 uppercase">
-              Verifier
+              vAttestation
             </span>
           </div>
         </div>
