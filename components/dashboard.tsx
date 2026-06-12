@@ -110,9 +110,11 @@ export function Dashboard() {
         
         {/* Intro branding badge */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-1.5 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 text-xs text-primary font-medium dark:bg-primary/20 dark:text-sky-300">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Cameroon Public Verification Hub</span>
+          <div className="moving-border-badge">
+            <div className="moving-border-badge-inner">
+              <Sparkles className="w-3.5 h-3.5 animated-icon" />
+              <span>Cameroon Public Verification Hub</span>
+            </div>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100">
             {t("app.title")}

@@ -133,9 +133,9 @@
 
 /* Custom premium styles */
 @keyframes scan-laser {
-  0% { top: 0%; opacity: 0.2; }
+  0% { top: 0; opacity: 0.2; }
   50% { top: 100%; opacity: 0.9; }
-  100% { top: 0%; opacity: 0.2; }
+  100% { top: 0; opacity: 0.2; }
 }
 
 .animate-scan-laser {
@@ -175,4 +175,101 @@
   background: rgba(127, 29, 29, 0.15);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+/* Premium moving border glow badge animation */
+@keyframes rotate-bg {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.moving-border-badge {
+  position: relative;
+  overflow: hidden;
+  padding: 2px; /* border thickness */
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 86, 140, 0.15);
+}
+
+.dark .moving-border-badge {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Background gradient rotating behind */
+.moving-border-badge::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250%;
+  height: 250%;
+  background: conic-gradient(
+    transparent,
+    transparent,
+    var(--glow-c1) 15%,
+    var(--glow-c2) 30%,
+    transparent 45%,
+    transparent
+  );
+  animation: rotate-bg 5s linear infinite;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Inner content area */
+.moving-border-badge-inner {
+  position: relative;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3.5px 12px;
+  color: var(--glow-c1);
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.dark .moving-border-badge-inner {
+  background: rgba(15, 23, 42, 0.92);
+  color: #e2e8f0; /* text-slate-200 */
+}
+
+/* Icon random/smooth color cycle animation */
+@keyframes icon-color-change {
+  0% { color: var(--glow-c1); }
+  20% { color: var(--glow-c2); }
+  40% { color: var(--glow-c3); }
+  60% { color: var(--glow-c4); }
+  80% { color: var(--glow-c5); }
+  100% { color: var(--glow-c1); }
+}
+
+.animated-icon {
+  animation: icon-color-change 8s infinite ease-in-out;
+}
+
+:root {
+  --glow-c1: #0a568c;
+  --glow-c2: #8b5cf6;
+  --glow-c3: #ec4899;
+  --glow-c4: #10b981;
+  --glow-c5: #f59e0b;
+}
+
+.dark {
+  --glow-c1: #44a0e4;
+  --glow-c2: #a78bfa;
+  --glow-c3: #f472b6;
+  --glow-c4: #34d399;
+  --glow-c5: #fbbf24;
 }

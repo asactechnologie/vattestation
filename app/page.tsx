@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react"
 const Dashboard = dynamic(() => import("@/components/dashboard").then(mod => mod.Dashboard), {
   ssr: false,
   loading: () => (
-    <div className="flex min-h-svh items-center justify-center bg-slate-50 dark:bg-slate-950">
+    <div className="flex min-h-svh items-center justify-center bg-background">
       <Loader2 className="w-8 h-8 text-primary animate-spin" />
     </div>
   ),
