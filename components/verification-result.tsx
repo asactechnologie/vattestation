@@ -23,9 +23,18 @@ import {
 interface VerificationResultProps {
   apiResponse: any
   apiError: string | null
+  wasScanned?: boolean
+  searchQuery?: string
+  onReset?: () => void
 }
 
-export function VerificationResult({ apiResponse, apiError }: VerificationResultProps) {
+export function VerificationResult({
+  apiResponse,
+  apiError,
+  wasScanned = false,
+  searchQuery = "",
+  onReset,
+}: VerificationResultProps) {
   const { t, i18n } = useTranslation()
   const [showChildCert, setShowChildCert] = useState(true)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -68,6 +77,83 @@ export function VerificationResult({ apiResponse, apiError }: VerificationResult
 
   const isSuccess = apiResponse.status
   const certificateData = apiResponse.data?.[0]
+
+  const isMinimalist = isSuccess && !wasScanned && !!searchQuery && searchQuery.trim().length <= 10
+
+  if (isMinimalist && certificateData) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300"
+        onClick={() => onReset?.()}
+      >
+        <div
+          className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-emerald-500/20 shadow-2xl rounded-2xl p-6 md:p-8 space-y-6 animate-in zoom-in-95 slide-in-from-bottom-10 duration-350 ease-out max-sm:fixed max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:rounded-none max-sm:m-0 max-sm:flex max-sm:flex-col max-sm:justify-between"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Top close button */}
+          <button
+            onClick={() => onReset?.()}
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full transition-colors cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800"
+            title={t("result.close")}
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="flex-1 flex flex-col justify-center space-y-6 max-sm:py-8">
+            {/* Header Success Section */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/25 animate-pulse">
+                <CheckCircle2 className="w-9 h-9 text-emerald-500" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-xl font-extrabold text-emerald-800 dark:text-emerald-400">
+                  {t("result.valid")}
+                </h4>
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold leading-relaxed">
+                  {apiResponse.message || t("result.validMessage")}
+                </p>
+              </div>
+            </div>
+
+            {/* Minimalist Details Card */}
+            <div className="bg-emerald-500/5 border border-emerald-500/10 p-5 rounded-2xl space-y-4">
+              {/* Item: Number */}
+              <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-slate-400" />
+                  {t("result.attestationNumber")}
+                </span>
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-100 select-all">
+                  {certificateData.numero_attestation}
+                </span>
+              </div>
+
+              {/* Item: Company */}
+              <div className="flex items-center justify-between pt-1">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
+                  <Building2 className="w-3.5 h-3.5 text-slate-400" />
+                  {t("result.company")}
+                </span>
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                  {certificateData.nom_compagnie}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Action Button */}
+          <div className="pt-2 max-sm:pb-6">
+            <button
+              onClick={() => onReset?.()}
+              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg focus:outline-hidden cursor-pointer"
+            >
+              {t("result.close")}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="transition-all duration-300">

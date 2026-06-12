@@ -7,7 +7,7 @@ import { HistoryItem } from "@/hooks/use-local-storage-history"
 interface VerificationHistoryProps {
   history: HistoryItem[]
   historyReady: boolean
-  onReverify: (query: string) => void
+  onReverify: (query: string, wasScanned?: boolean) => void
   onRemove: (id: string) => void
   onClearAll: () => void
 }
@@ -109,7 +109,7 @@ export function VerificationHistory({
 
               <div className="flex items-center gap-1 shrink-0">
                 <button
-                  onClick={() => onReverify(item.query)}
+                  onClick={() => onReverify(item.query, item.wasScanned)}
                   className="text-[10px] font-bold bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
                 >
                   {t("history.reverify")}

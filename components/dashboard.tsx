@@ -37,14 +37,18 @@ export function Dashboard() {
   const [isVerifying, setIsVerifying] = useState(false)
   const [apiResponse, setApiResponse] = useState<unknown | null>(null)
   const [apiError, setApiError] = useState<string | null>(null)
+  const [wasScanned, setWasScanned] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
 
   // Action: Trigger certificate verification
-  const performVerification = async (infoValue: string) => {
+  const performVerification = async (infoValue: string, fromScan = false) => {
     if (!infoValue.trim()) return
 
     setIsVerifying(true)
     setApiError(null)
     setApiResponse(null)
+    setWasScanned(fromScan)
+    setSearchQuery(infoValue.trim())
 
     try {
       const res = await fetch("/api/verify", {
@@ -59,16 +63,16 @@ export function Dashboard() {
 
       if (res.ok && result.status) {
         setApiResponse(result)
-        addToHistory(infoValue.trim(), true, result.message || "Valide", result.data)
+        addToHistory(infoValue.trim(), true, result.message || "Valide", result.data, fromScan)
       } else {
         setApiResponse(result)
         setApiError(result.message || t("result.invalidMessage"))
-        addToHistory(infoValue.trim(), false, result.message || "Invalide")
+        addToHistory(infoValue.trim(), false, result.message || "Invalide", undefined, fromScan)
       }
     } catch (err: unknown) {
       console.error(err)
       setApiError(t("result.networkError"))
-      addToHistory(infoValue.trim(), false, t("result.networkError"))
+      addToHistory(infoValue.trim(), false, t("result.networkError"), undefined, fromScan)
     } finally {
       setIsVerifying(false)
     }
@@ -79,24 +83,25 @@ export function Dashboard() {
     setActiveTab("manual")
     const truncated = decodedText.split("|")
     setQueryInput(truncated[0])
-    performVerification(decodedText)
+    performVerification(truncated[0], true)
   }
 
   // Callback: Re-verify an item from history tab
-  const handleReverifyHistory = (queryValue: string) => {
+  const handleReverifyHistory = (queryValue: string, itemWasScanned?: boolean) => {
     setQueryInput(queryValue)
     setActiveTab("manual")
-    performVerification(queryValue)
+    performVerification(queryValue, !!itemWasScanned)
   }
 
   // Callback: Clear/Reset current API search state
   const handleResetSearch = () => {
     setApiResponse(null)
     setApiError(null)
+    setSearchQuery("")
   }
 
   return (
-    <div className="min-h-svh bg-linear-to-br from-slate-50 via-sky-50/20 to-slate-100 dark:from-slate-950 dark:via-slate-900/50 dark:to-slate-950 transition-colors duration-300 flex flex-col font-sans pb-12">
+    <div className="min-h-svh bg-background transition-colors duration-300 flex flex-col font-sans pb-12">
       {/* Brand Header */}
       <Header />
 
@@ -118,7 +123,7 @@ export function Dashboard() {
         </div>
 
         {/* Dashboard Content Panel */}
-        <div className="glass-panel rounded-2xl shadow-xs border p-4 md:p-6 transition-all duration-300">
+        <div className="bg-card rounded-2xl shadow-xs border p-4 md:p-6 transition-all duration-300">
           
           {/* Navigation Controls */}
           <div className="grid grid-cols-3 gap-1 bg-slate-200/50 dark:bg-gray-700 p-1 rounded-xl mb-6">
@@ -213,6 +218,9 @@ export function Dashboard() {
           <VerificationResult
             apiResponse={apiResponse}
             apiError={apiError}
+            wasScanned={wasScanned}
+            searchQuery={searchQuery}
+            onReset={handleResetSearch}
           />
         )}
       </main>

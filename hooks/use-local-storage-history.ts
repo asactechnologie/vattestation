@@ -8,6 +8,7 @@ export interface HistoryItem {
   timestamp: number
   status: boolean
   message: string
+  wasScanned?: boolean
   numeroAttestation?: string
   nomAssure?: string
   numeroImmatriculation?: string
@@ -46,7 +47,8 @@ export function useLocalStorageHistory() {
     query: string,
     status: boolean,
     message: string,
-    responseData?: any
+    responseData?: any,
+    wasScanned?: boolean
   ) => {
     // Generate a simple unique ID
     const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
@@ -71,6 +73,7 @@ export function useLocalStorageHistory() {
       timestamp: Date.now(),
       status,
       message,
+      wasScanned,
       ...details,
     }
 
