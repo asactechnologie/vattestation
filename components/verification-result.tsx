@@ -129,13 +129,35 @@ export function VerificationResult({
               </div>
 
               {/* Item: Company */}
-              <div className="flex items-center justify-between pt-1">
+              <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3">
                 <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
                   <Building2 className="w-3.5 h-3.5 text-slate-400" />
                   {t("result.company")}
                 </span>
                 <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
                   {certificateData.nom_compagnie}
+                </span>
+              </div>
+
+              {/* Item: Date start */}
+              <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                  {t("result.effectiveDate")}
+                </span>
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                  {formatDate(certificateData.date_effet)}
+                </span>
+              </div>
+
+              {/* Item: Expiry Date */}
+              <div className="flex items-center justify-between pt-1">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                  {t("result.expiryDate")}
+                </span>
+                <span className="text-sm font-bold text-rose-600 dark:text-rose-455">
+                  {formatDate(certificateData.date_expiration)}
                 </span>
               </div>
             </div>
