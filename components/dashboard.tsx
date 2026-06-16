@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import "@/lib/i18n" // Initialize i18n
 import { useLocalStorageHistory } from "@/hooks/use-local-storage-history"
+import { useVerification } from "@/hooks/use-verification"
 import { QrScanner } from "@/components/qr-scanner"
 import { Header } from "@/components/header"
 import { ManualSearch } from "@/components/manual-search"
@@ -33,50 +34,16 @@ export function Dashboard() {
   // Input queries
   const [queryInput, setQueryInput] = useState("")
 
-  // Loading and API states
-  const [isVerifying, setIsVerifying] = useState(false)
-  const [apiResponse, setApiResponse] = useState<unknown | null>(null)
-  const [apiError, setApiError] = useState<string | null>(null)
-  const [wasScanned, setWasScanned] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-
-  // Action: Trigger certificate verification
-  const performVerification = async (infoValue: string, fromScan = false) => {
-    if (!infoValue.trim()) return
-
-    setIsVerifying(true)
-    setApiError(null)
-    setApiResponse(null)
-    setWasScanned(fromScan)
-    setSearchQuery(infoValue.trim())
-
-    try {
-      const res = await fetch("/api/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ info: infoValue.trim() }),
-      })
-
-      const result = await res.json()
-
-      if (res.ok && result.status) {
-        setApiResponse(result)
-        addToHistory(infoValue.trim(), true, result.message || "Valide", result.data, fromScan)
-      } else {
-        setApiResponse(result)
-        setApiError(result.message || t("result.invalidMessage"))
-        addToHistory(infoValue.trim(), false, result.message || "Invalide", undefined, fromScan)
-      }
-    } catch (err: unknown) {
-      console.error(err)
-      setApiError(t("result.networkError"))
-      addToHistory(infoValue.trim(), false, t("result.networkError"), undefined, fromScan)
-    } finally {
-      setIsVerifying(false)
-    }
-  }
+  // Destructure verification hook
+  const {
+    isVerifying,
+    apiResponse,
+    apiError,
+    wasScanned,
+    searchQuery,
+    performVerification,
+    resetSearch,
+  } = useVerification({ addToHistory })
 
   // Callback: QR Scanner successfully decoded a string
   const handleQrScanSuccess = (decodedText: string) => {
@@ -95,9 +62,7 @@ export function Dashboard() {
 
   // Callback: Clear/Reset current API search state
   const handleResetSearch = () => {
-    setApiResponse(null)
-    setApiError(null)
-    setSearchQuery("")
+    resetSearch()
   }
 
   return (

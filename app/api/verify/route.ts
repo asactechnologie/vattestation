@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
-
-const PUBLIC_API_URL = "https://ppama-api.asac.cm/api/verifications/public"
+import { VerificationContext } from "@/lib/strategies/verification-context"
 
 export async function POST(request: Request) {
   try {
@@ -18,38 +17,10 @@ export async function POST(request: Request) {
       )
     }
 
-    // Set up request to public API
-    const response = await fetch(PUBLIC_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({ info }),
-      // Optional: set a cache setting or keep-alive if desired
-      cache: "no-store",
-    })
+    const context = new VerificationContext()
+    const result = await context.verify(info)
 
-    if (!response.ok) {
-      // API returned a non-200 state, e.g. 500 or 404
-      const text = await response.text()
-      try {
-        const parsed = JSON.parse(text)
-        return NextResponse.json(parsed, { status: response.status })
-      } catch {
-        return NextResponse.json(
-          {
-            status: false,
-            message: `Erreur API (${response.status}): ${text || "Erreur de serveur"}`,
-            data: [],
-          },
-          { status: response.status }
-        )
-      }
-    }
-
-    const data = await response.json()
-    return NextResponse.json(data)
+    return NextResponse.json(result)
   } catch (error: any) {
     console.error("Proxy verification error:", error)
     return NextResponse.json(
