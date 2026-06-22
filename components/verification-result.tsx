@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
+import { generateSlug } from "@/lib/services/slug"
 import {
   CheckCircle2,
   XCircle,
@@ -17,7 +18,9 @@ import {
   ChevronDown,
   AlertTriangle,
   X,
-  Eye
+  Eye,
+  Star,
+  StarIcon,
 } from "lucide-react"
 
 interface VerificationResultProps {
@@ -39,6 +42,53 @@ export function VerificationResult({
   const [showChildCert, setShowChildCert] = useState(true)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [imageError, setImageError] = useState<Record<string, boolean>>({})
+  const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  const [loadingLogo, setLoadingLogo] = useState(false)
+
+  const isSuccess = apiResponse?.status
+  const certificateData = apiResponse?.data?.[0]
+
+  useEffect(() => {
+    let isMounted = true
+
+    if (!certificateData || !certificateData.nom_compagnie) {
+      Promise.resolve().then(() => {
+        if (isMounted) setLogoUrl(null)
+      })
+      return
+    }
+
+    const companyName = certificateData.nom_compagnie
+    const slug = generateSlug(companyName)
+
+    Promise.resolve().then(() => {
+      if (isMounted) setLoadingLogo(true)
+    })
+
+    fetch(`/api/member/${slug}`)
+      .then(res => {
+        if (!res.ok) throw new Error("Not found")
+        return res.json()
+      })
+      .then(data => {
+        if (isMounted && data && data.logo && data.logo.url) {
+          setLogoUrl(data.logo.url)
+        } else {
+          if (isMounted) setLogoUrl(null)
+        }
+      })
+      .catch(err => {
+        console.error("Failed to load member logo:", err)
+        if (isMounted) setLogoUrl(null)
+      })
+      .finally(() => {
+        if (isMounted) setLoadingLogo(false)
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [certificateData])
 
   const isImageUrl = (url?: string) => {
     if (!url) return false
@@ -75,74 +125,111 @@ export function VerificationResult({
     }
   }
 
-  const isSuccess = apiResponse.status
-  const certificateData = apiResponse.data?.[0]
-
   const isMinimalist = isSuccess && !wasScanned && !!searchQuery && searchQuery.trim().length <= 10
 
   if (isMinimalist && certificateData) {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300"
+        className="fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-md duration-300 fade-in"
         onClick={() => onReset?.()}
       >
         <div
-          className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-emerald-500/20 shadow-2xl rounded-2xl p-6 md:p-8 space-y-6 animate-in zoom-in-95 slide-in-from-bottom-10 duration-350 ease-out max-sm:fixed max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:rounded-none max-sm:m-0 max-sm:flex max-sm:flex-col max-sm:justify-between"
+          className="relative w-full max-w-md animate-in space-y-6 overflow-hidden rounded-2xl border border-emerald-500/20 bg-white p-6 shadow-2xl duration-350 ease-out slide-in-from-bottom-10 zoom-in-95 max-sm:fixed max-sm:inset-0 max-sm:m-0 max-sm:flex max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:justify-between max-sm:rounded-none md:p-8 dark:bg-slate-900"
           onClick={(e) => e.stopPropagation()}
         >
+          <div className={"absolute top-0 left-0 grid h-2 w-full grid-cols-3"}>
+            <div className={"h-full bg-green-800"}></div>
+            <div
+              className={"flex h-full items-center justify-center bg-red-600"}
+            >
+              <Star
+                fill={"#fcc800"}
+                className={"h-1.5 w-1.5 text-yellow-400"}
+              />
+            </div>
+            <div className={"h-full bg-yellow-400"}></div>
+          </div>
           {/* Top close button */}
           <button
             onClick={() => onReset?.()}
-            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full transition-colors cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="absolute top-4 right-4 cursor-pointer rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
             title={t("result.close")}
           >
-            <X className="w-5 h-5" />
+            <X className="h-5 w-5" />
           </button>
 
-          <div className="flex-1 flex flex-col justify-center space-y-6 max-sm:py-8">
+          <div className="flex flex-1 flex-col justify-center space-y-6 max-sm:py-8">
             {/* Header Success Section */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/25 animate-pulse">
-                <CheckCircle2 className="w-9 h-9 text-emerald-500" />
+            <div className="flex flex-col items-center space-y-3 text-center">
+              <div className="relative shrink-0">
+                {logoUrl ? (
+                  <div className="flex h-20 w-20 animate-in items-center justify-center rounded-2xl border border-slate-200 bg-white p-2.5 shadow-md duration-300 zoom-in-50 dark:border-slate-700 dark:bg-slate-800">
+                    <img
+                      src={logoUrl}
+                      alt={certificateData.nom_compagnie}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex h-16 w-16 animate-pulse items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10">
+                    <CheckCircle2 className="h-9 w-9 text-emerald-500" />
+                  </div>
+                )}
+                {logoUrl && (
+                  <div className="absolute -right-1.5 -bottom-1.5 rounded-full bg-white p-1 shadow-md dark:bg-slate-900">
+                    <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                  </div>
+                )}
               </div>
               <div className="space-y-1">
                 <h4 className="text-xl font-extrabold text-emerald-800 dark:text-emerald-400">
                   {t("result.valid")}
                 </h4>
-                <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold leading-relaxed">
+                <p className="text-sm leading-relaxed font-semibold text-slate-500 dark:text-slate-400">
                   {apiResponse.message || t("result.validMessage")}
                 </p>
               </div>
             </div>
 
             {/* Minimalist Details Card */}
-            <div className="bg-emerald-500/5 border border-emerald-500/10 p-5 rounded-2xl space-y-4">
+            <div className="space-y-4 rounded-2xl border border-emerald-500/10 bg-emerald-500/5 p-5">
               {/* Item: Number */}
               <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3">
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
-                  <Shield className="w-3.5 h-3.5 text-slate-400" />
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  <Shield className="h-3.5 w-3.5 text-slate-400" />
                   {t("result.attestationNumber")}
                 </span>
-                <span className="text-sm font-bold text-slate-800 dark:text-slate-100 select-all">
+                <span className="text-sm font-bold text-slate-800 select-all dark:text-slate-100">
                   {certificateData.numero_attestation}
                 </span>
               </div>
 
               {/* Item: Company */}
               <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3">
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
-                  <Building2 className="w-3.5 h-3.5 text-slate-400" />
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  <Building2 className="h-3.5 w-3.5 text-slate-400" />
                   {t("result.company")}
                 </span>
-                <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
-                  {certificateData.nom_compagnie}
-                </span>
+                <div className="flex items-center gap-2 text-right">
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                    {certificateData.nom_compagnie}
+                  </span>
+                  {logoUrl && (
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded border border-slate-200/50 bg-white p-0.5 dark:bg-slate-800">
+                      <img
+                        src={logoUrl}
+                        alt="Logo"
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Item: Date start */}
               <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3">
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" />
                   {t("result.effectiveDate")}
                 </span>
                 <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
@@ -152,11 +239,11 @@ export function VerificationResult({
 
               {/* Item: Expiry Date */}
               <div className="flex items-center justify-between pt-1">
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" />
                   {t("result.expiryDate")}
                 </span>
-                <span className="text-sm font-bold text-rose-600 dark:text-rose-455">
+                <span className="dark:text-rose-455 text-sm font-bold text-rose-600">
                   {formatDate(certificateData.date_expiration)}
                 </span>
               </div>
@@ -167,7 +254,7 @@ export function VerificationResult({
           <div className="pt-2 max-sm:pb-6">
             <button
               onClick={() => onReset?.()}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg focus:outline-hidden cursor-pointer"
+              className="w-full cursor-pointer rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-emerald-700 hover:shadow-lg focus:outline-hidden active:bg-emerald-800"
             >
               {t("result.close")}
             </button>
@@ -186,7 +273,22 @@ export function VerificationResult({
           {/* Header Status & Download button */}
           <div className="flex items-center justify-between gap-4 border-b border-emerald-500/10 pb-3">
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0" />
+              <div className="relative shrink-0">
+                {logoUrl ? (
+                  <div className="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-1.5 flex items-center justify-center shadow-xs">
+                    <img src={logoUrl} alt={certificateData.nom_compagnie} className="w-full h-full object-contain" />
+                  </div>
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/25">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-500 animate-pulse" />
+                  </div>
+                )}
+                {logoUrl && (
+                  <div className="absolute -bottom-1 -right-1 bg-white dark:bg-slate-900 rounded-full p-0.5 shadow-xs border border-slate-100 dark:border-slate-800">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  </div>
+                )}
+              </div>
               <div>
                 <h4 className="text-base font-extrabold text-emerald-800 dark:text-emerald-400">
                   {t("result.valid")}
@@ -259,9 +361,16 @@ export function VerificationResult({
                     <Building2 className="w-3 h-3 text-slate-400 shrink-0" />
                     {t("result.company")}
                   </span>
-                  <span className="font-bold text-slate-800 dark:text-slate-200">
-                    {certificateData.nom_compagnie}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {logoUrl && (
+                      <div className="w-5 h-5 rounded bg-white dark:bg-slate-800 p-0.5 border border-slate-200/50 flex items-center justify-center overflow-hidden shrink-0">
+                        <img src={logoUrl} alt="Logo" className="w-full h-full object-contain" />
+                      </div>
+                    )}
+                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                      {certificateData.nom_compagnie}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Item: Vehicle */}

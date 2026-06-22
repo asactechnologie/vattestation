@@ -35,7 +35,9 @@ export function PwaInitializer() {
     // 3. Detect iOS
     const userAgent = navigator.userAgent || ""
     const isAppleMobile = /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream
-    setIsIOS(isAppleMobile)
+    Promise.resolve().then(() => {
+      setIsIOS(isAppleMobile)
+    })
 
     // 4. Capture beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
