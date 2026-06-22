@@ -22,6 +22,7 @@ import {
   Star,
   StarIcon,
 } from "lucide-react"
+import { AsacWatermark } from "@/components/AsacWatermark"
 
 interface VerificationResultProps {
   apiResponse: any
@@ -137,6 +138,7 @@ export function VerificationResult({
           className="relative w-full max-w-md animate-in space-y-6 overflow-hidden rounded-2xl border border-emerald-500/20 bg-white p-6 shadow-2xl duration-350 ease-out slide-in-from-bottom-10 zoom-in-95 max-sm:fixed max-sm:inset-0 max-sm:m-0 max-sm:flex max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:justify-between max-sm:rounded-none md:p-8 dark:bg-slate-900"
           onClick={(e) => e.stopPropagation()}
         >
+          <AsacWatermark/>
           <div className={"absolute top-0 left-0 grid h-2 w-full grid-cols-3"}>
             <div className={"h-full bg-green-800"}></div>
             <div
@@ -269,7 +271,8 @@ export function VerificationResult({
       {isSuccess && certificateData ? (
 
         /* VALID CERTIFICATE RESPONSE */
-        <div className="glass-card-valid rounded-2xl shadow-lg border-l-4 border-emerald-500 p-5 md:p-6 space-y-5 animate-in fade-in-50 slide-in-from-bottom-5 duration-300">
+        <div className="relative glass-card-valid rounded-2xl shadow-lg border-l-4 border-emerald-500 p-5 md:p-6 space-y-5 animate-in fade-in-50 slide-in-from-bottom-5 duration-300">
+          <AsacWatermark/>
           {/* Header Status & Download button */}
           <div className="flex items-center justify-between gap-4 border-b border-emerald-500/10 pb-3">
             <div className="flex items-center gap-2.5">
