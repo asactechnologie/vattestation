@@ -5,7 +5,7 @@ export const AsacWatermark = () => {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       <div className="flex h-full w-full flex-wrap items-center justify-center gap-2">
-        {Array.from({ length: 48 }).map((_, i) => (
+        {Array.from({ length: 56 }).map((_, i) => (
           <img
             key={i}
             src="/assets/logo_asac.png"
