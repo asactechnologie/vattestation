@@ -17,8 +17,11 @@ export async function POST(request: Request) {
       )
     }
 
+    // Sanitize input: convert to uppercase and strip all spaces and hyphens
+    const sanitizedInfo = info.toUpperCase().replace(/[\s-]+/g, "")
+
     const context = new VerificationContext()
-    const result = await context.verify(info)
+    const result = await context.verify(sanitizedInfo)
 
     return NextResponse.json(result)
   } catch (error: any) {

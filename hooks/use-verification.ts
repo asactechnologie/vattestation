@@ -5,6 +5,16 @@ interface UseVerificationOptions {
   addToHistory: (infoValue: string, success: boolean, message: string, data?: any, fromScan?: boolean) => void
 }
 
+/**
+ * Sanitizes input before verification:
+ * Converts to uppercase and strips all whitespace and hyphens.
+ * E.g., "CE 723 PE", "ce 723Pe", "CE-723-PE" -> "CE723PE"
+ */
+export function sanitizeVerificationInput(input: string): string {
+  if (!input) return ""
+  return input.toUpperCase().replace(/[\s-]+/g, "")
+}
+
 export function useVerification({ addToHistory }: UseVerificationOptions) {
   const { t } = useTranslation()
   const [isVerifying, setIsVerifying] = useState(false)
@@ -14,13 +24,14 @@ export function useVerification({ addToHistory }: UseVerificationOptions) {
   const [searchQuery, setSearchQuery] = useState("")
 
   const performVerification = async (infoValue: string, fromScan = false) => {
-    if (!infoValue.trim()) return
+    const sanitized = sanitizeVerificationInput(infoValue)
+    if (!sanitized) return
 
     setIsVerifying(true)
     setApiError(null)
     setApiResponse(null)
     setWasScanned(fromScan)
-    setSearchQuery(infoValue.trim())
+    setSearchQuery(sanitized)
 
     try {
       const res = await fetch("/api/verify", {
@@ -28,23 +39,23 @@ export function useVerification({ addToHistory }: UseVerificationOptions) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ info: infoValue.trim() }),
+        body: JSON.stringify({ info: sanitized }),
       })
 
       const result = await res.json()
 
       if (res.ok && result.status) {
         setApiResponse(result)
-        addToHistory(infoValue.trim(), true, result.message || "Valide", result.data, fromScan)
+        addToHistory(sanitized, true, result.message || "Valide", result.data, fromScan)
       } else {
         setApiResponse(result)
         setApiError(result.message || t("result.invalidMessage"))
-        addToHistory(infoValue.trim(), false, result.message || "Invalide", undefined, fromScan)
+        addToHistory(sanitized, false, result.message || "Invalide", undefined, fromScan)
       }
     } catch (err: unknown) {
       console.error(err)
       setApiError(t("result.networkError"))
-      addToHistory(infoValue.trim(), false, t("result.networkError"), undefined, fromScan)
+      addToHistory(sanitized, false, t("result.networkError"), undefined, fromScan)
     } finally {
       setIsVerifying(false)
     }
