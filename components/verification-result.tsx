@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
+import { motion, AnimatePresence } from "framer-motion"
 import { generateSlug } from "@/lib/services/slug"
 import {
   CheckCircle2,
@@ -130,12 +131,20 @@ export function VerificationResult({
 
   if (isMinimalist && certificateData) {
     return (
-      <div
-        className="fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-md duration-300 fade-in"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md"
         onClick={() => onReset?.()}
       >
-        <div
-          className="relative w-full max-w-md animate-in space-y-6 overflow-hidden rounded-2xl border border-emerald-500/20 bg-white p-6 shadow-2xl duration-350 ease-out slide-in-from-bottom-10 zoom-in-95 max-sm:fixed max-sm:inset-0 max-sm:m-0 max-sm:flex max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:justify-between max-sm:rounded-none md:p-8 dark:bg-slate-900"
+        <motion.div
+          initial={{ scale: 0.9, y: 20, opacity: 0 }}
+          animate={{ scale: 1, y: 0, opacity: 1 }}
+          exit={{ scale: 0.9, y: 20, opacity: 0 }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          className="relative w-full max-w-md space-y-6 overflow-hidden rounded-2xl border border-emerald-500/20 bg-white p-6 shadow-2xl max-sm:fixed max-sm:inset-0 max-sm:m-0 max-sm:flex max-sm:h-full max-sm:w-full max-sm:flex-col max-sm:justify-between max-sm:rounded-none md:p-8 dark:bg-slate-900"
           onClick={(e) => e.stopPropagation()}
         >
           <AsacWatermark/>
@@ -165,7 +174,7 @@ export function VerificationResult({
             <div className="flex flex-col items-center space-y-3 text-center">
               <div className="relative shrink-0">
                 {logoUrl ? (
-                  <div className="flex h-20 w-20 animate-in items-center justify-center rounded-2xl border border-slate-200 bg-white p-2.5 shadow-md duration-300 zoom-in-50 dark:border-slate-700 dark:bg-slate-800">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-slate-200 bg-white p-2.5 shadow-md dark:border-slate-700 dark:bg-slate-800">
                     <img
                       src={logoUrl}
                       alt={certificateData.nom_compagnie}
@@ -173,8 +182,8 @@ export function VerificationResult({
                     />
                   </div>
                 ) : (
-                  <div className="flex h-16 w-16 animate-pulse items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10">
-                    <CheckCircle2 className="h-9 w-9 text-emerald-500" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/25 bg-emerald-500/10">
+                    <CheckCircle2 className="h-9 w-9 text-emerald-500 animate-pulse" />
                   </div>
                 )}
                 {logoUrl && (
@@ -261,8 +270,8 @@ export function VerificationResult({
               {t("result.close")}
             </button>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     )
   }
 
@@ -559,47 +568,57 @@ export function VerificationResult({
       )}
 
       {/* Zoomed Image Preview Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div
-            className="relative max-w-4xl max-h-[90vh] mx-4 p-1 bg-transparent rounded-2xl overflow-hidden animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
+            onClick={() => setSelectedImage(null)}
           >
-            {/* Modal Header Controls */}
-            <div className="absolute top-4 right-4 z-10 flex gap-2">
-              <a
-                href={selectedImage}
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 bg-slate-800/80 hover:bg-slate-700 text-white rounded-full transition-colors cursor-pointer"
-                title="Download"
-              >
-                <Download className="w-5 h-5" />
-              </a>
-              <button
-                onClick={() => setSelectedImage(null)}
-                className="p-2 bg-slate-800/80 hover:bg-slate-700 text-white rounded-full transition-colors cursor-pointer"
-                title="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-4xl max-h-[90vh] mx-4 p-1 bg-transparent rounded-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header Controls */}
+              <div className="absolute top-4 right-4 z-10 flex gap-2">
+                <a
+                  href={selectedImage}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-slate-800/80 hover:bg-slate-700 text-white rounded-full transition-colors cursor-pointer"
+                  title="Download"
+                >
+                  <Download className="w-5 h-5" />
+                </a>
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="p-2 bg-slate-800/80 hover:bg-slate-700 text-white rounded-full transition-colors cursor-pointer"
+                  title="Close"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-            {/* Image display */}
-            <div className="w-full h-full flex items-center justify-center p-4">
-              <img
-                src={selectedImage}
-                alt="Enlarged Certificate Preview"
-                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-      )}
+              {/* Image display */}
+              <div className="w-full h-full flex items-center justify-center p-4">
+                <img
+                  src={selectedImage}
+                  alt="Enlarged Certificate Preview"
+                  className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-lg"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

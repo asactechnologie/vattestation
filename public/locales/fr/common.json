@@ -2,9 +2,9 @@
   "app": {
     "title": "Vérificateur d'Attestation ASAC",
     "subtitle": "Vérifiez instantanément la validité de votre attestation d'assurance.",
-    "scanQr": "Scanner un Code QR",
-    "manualEntry": "Saisie Manuelle",
-    "history": "Historique des Vérifications",
+    "scanQr": "Code QR",
+    "manualEntry": "Saisie",
+    "history": "Historique",
     "lightMode": "Mode Clair",
     "darkMode": "Mode Sombre",
     "toggleTheme": "Changer de thème",

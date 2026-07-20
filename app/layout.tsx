@@ -14,12 +14,12 @@ const fontMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "ASAC Insurance Verifier",
+  title: "ASAC V-ATTESTATION",
   description: "Check the validity of your insurance certificate (attestation) instantly.",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "ASAC Verifier",
+    title: "ASAC V-ATTESTATION",
   },
 }
 
