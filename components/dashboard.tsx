@@ -38,6 +38,7 @@ export function Dashboard() {
   const [activeTab, setActiveTab] = useState<"scan" | "manual" | "history">("manual")
   const [mobileView, setMobileView] = useState<"form" | "result">("form")
   const [queryInput, setQueryInput] = useState("")
+  const [redirectUrl, setRedirectUrl] = useState<string | undefined>(undefined)
 
   // Destructure verification hook
   const {
@@ -51,6 +52,27 @@ export function Dashboard() {
   } = useVerification({ addToHistory })
 
   const hasResult = Boolean(apiResponse || apiError)
+
+  // Handle URL query parameters on mount (q & redirectUrl)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search)
+      const qParam = params.get("q")
+      const redirectUrlParam = params.get("redirectUrl")
+
+      if (redirectUrlParam) {
+        setRedirectUrl(redirectUrlParam)
+      }
+
+      if (qParam && qParam.trim().length > 0) {
+        const sanitized = qParam.trim().toUpperCase().replace(/[\s-]+/g, "")
+        setQueryInput(sanitized)
+        setActiveTab("manual")
+        setMobileView("result")
+        performVerification(sanitized, false)
+      }
+    }
+  }, [])
 
   // Auto-switch to result view on mobile when verification starts or results arrive
   useEffect(() => {
@@ -287,6 +309,7 @@ export function Dashboard() {
                 apiError={apiError}
                 wasScanned={wasScanned}
                 searchQuery={searchQuery}
+                redirectUrl={redirectUrl}
                 onReset={handleResetSearch}
                 onSelectExample={(ex) => {
                   setActiveTab("manual")

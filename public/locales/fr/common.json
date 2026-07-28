@@ -71,7 +71,8 @@
     "childType": "Type d'Attestation",
     "childState": "État",
     "childValidity": "Validité",
-    "close": "Fermer"
+    "close": "Fermer",
+    "backToApp": "Retour à l'application"
   },
   "pwa": {
     "promptTitle": "Desktop & Mobile App",

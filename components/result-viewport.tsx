@@ -25,6 +25,7 @@ interface ResultViewportProps {
   apiError: string | null
   wasScanned?: boolean
   searchQuery?: string
+  redirectUrl?: string
   onReset: () => void
   onSelectExample?: (query: string) => void
 }
@@ -35,6 +36,7 @@ export function ResultViewport({
   apiError,
   wasScanned = false,
   searchQuery = "",
+  redirectUrl,
   onReset,
   onSelectExample,
 }: ResultViewportProps) {
@@ -116,7 +118,7 @@ export function ResultViewport({
   const PromptIcon = currentPrompt.icon
 
   return (
-    <div className="relative w-full h-full min-h-[440px] flex flex-col justify-start">
+    <div className="relative w-full h-full min-h-110 flex flex-col justify-start">
       <AnimatePresence mode="wait">
         {/* STATE 1: LOADING ANIMATION */}
         {activeStateKey === "loading" && (
@@ -129,13 +131,13 @@ export function ResultViewport({
             className="w-full flex-1 flex flex-col items-center justify-center p-6 md:p-8 rounded-3xl glass-panel border border-primary/20 shadow-xl relative overflow-hidden"
           >
             {/* Glowing top line accent */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/30 via-primary to-primary/30 animate-pulse" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary/30 via-primary to-primary/30 animate-pulse" />
 
             {/* Glowing radar pulses */}
             <div className="relative flex items-center justify-center my-6">
               <span className="absolute w-28 h-28 rounded-full bg-primary/10 animate-ping duration-1000" />
               <span className="absolute w-20 h-20 rounded-full bg-primary/20 animate-pulse" />
-              <div className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/30">
+              <div className="relative z-10 w-16 h-16 rounded-2xl bg-linear-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/30">
                 <Cpu className="w-8 h-8 animate-spin" style={{ animationDuration: "4s" }} />
               </div>
             </div>
@@ -204,6 +206,7 @@ export function ResultViewport({
               apiError={apiError}
               wasScanned={wasScanned}
               searchQuery={searchQuery}
+              redirectUrl={redirectUrl}
               onReset={onReset}
             />
           </motion.div>
@@ -233,7 +236,7 @@ export function ResultViewport({
             </div>
 
             {/* Central Animated Rotating Prompts */}
-            <div className="my-auto py-6 text-center space-y-4 max-w-sm mx-auto flex flex-col items-center justify-center min-h-[220px]">
+            <div className="my-auto py-6 text-center space-y-4 max-w-sm mx-auto flex flex-col items-center justify-center min-h-55">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={promptIndex}
@@ -244,7 +247,7 @@ export function ResultViewport({
                   className="flex flex-col items-center space-y-3"
                 >
                   <div className="relative inline-flex items-center justify-center">
-                    <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-slate-100 to-slate-200/80 dark:from-slate-800 dark:to-slate-900 border border-border shadow-inner flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-3xl bg-linear-to-tr from-slate-100 to-slate-200/80 dark:from-slate-800 dark:to-slate-900 border border-border shadow-inner flex items-center justify-center">
                       <PromptIcon className="w-10 h-10 text-primary" />
                     </div>
                     <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-xl bg-emerald-100 dark:bg-background text-white flex items-center justify-center shadow-md">

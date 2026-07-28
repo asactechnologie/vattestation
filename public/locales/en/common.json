@@ -71,7 +71,8 @@
     "childType": "Certificate Type",
     "childState": "State",
     "childValidity": "Validity",
-    "close": "Close"
+    "close": "Close",
+    "backToApp": "Back to App"
   },
   "pwa": {
     "promptTitle": "Desktop & Mobile App",
