@@ -80,6 +80,11 @@
     --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
     --sidebar-border: oklch(0.925 0.005 214.3);
     --sidebar-ring: oklch(0.723 0.014 214.4);
+    --glow-c1: #007a5e; /* Green */
+    --glow-c2: #ce1126; /* Red */
+    --glow-c3: #fcd116; /* Yellow */
+    --glow-c4: #009e76; /* Bright Green */
+    --glow-c5: #fcc800; /* Warm Yellow */
 }
 
 .dark {
@@ -114,6 +119,11 @@
     --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.537 0.024 264.356);
+    --glow-c1: #00a881; /* Green */
+    --glow-c2: #ff3344; /* Red */
+    --glow-c3: #ffe045; /* Yellow */
+    --glow-c4: #00ffc4; /* Bright Green */
+    --glow-c5: #ffcc00; /* Warm Yellow */
 }
 
 @layer base {
@@ -178,12 +188,15 @@
 }
 
 /* Premium moving border glow badge animation */
-@keyframes rotate-bg {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-border {
+  to {
+    --border-angle: 360deg;
   }
 }
 
@@ -195,33 +208,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 86, 140, 0.15);
-}
-
-.dark .moving-border-badge {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* Background gradient rotating behind */
-.moving-border-badge::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 250%;
-  height: 250%;
   background: conic-gradient(
-    transparent,
-    transparent,
-    var(--glow-c1) 15%,
-    var(--glow-c2) 30%,
-    transparent 45%,
-    transparent
+    from var(--border-angle),
+    var(--glow-c1) 0%,
+    var(--glow-c1) 33.33%,
+    var(--glow-c2) 33.33%,
+    var(--glow-c2) 66.66%,
+    var(--glow-c3) 66.66%,
+    var(--glow-c3) 100%
   );
-  animation: rotate-bg 5s linear infinite;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+  animation: spin-border 3s linear infinite;
 }
+
+
+
+
+
 
 /* Inner content area */
 .moving-border-badge-inner {
@@ -256,20 +258,4 @@
 
 .animated-icon {
   animation: icon-color-change 8s infinite ease-in-out;
-}
-
-:root {
-  --glow-c1: #0a568c;
-  --glow-c2: #8b5cf6;
-  --glow-c3: #ec4899;
-  --glow-c4: #10b981;
-  --glow-c5: #f59e0b;
-}
-
-.dark {
-  --glow-c1: #44a0e4;
-  --glow-c2: #a78bfa;
-  --glow-c3: #f472b6;
-  --glow-c4: #34d399;
-  --glow-c5: #fbbf24;
 }

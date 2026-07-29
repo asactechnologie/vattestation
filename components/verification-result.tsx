@@ -28,6 +28,7 @@ import {
   HelpCircle,
 } from "lucide-react"
 import { AsacWatermark } from "@/components/AsacWatermark"
+import CmrFlag from "@/components/CmrFlag"
 
 
 interface VerificationResultProps {
@@ -206,18 +207,7 @@ export function VerificationResult({
           onClick={(e) => e.stopPropagation()}
         >
           <AsacWatermark />
-          <div className={"absolute top-0 left-0 grid h-2 w-full grid-cols-3"}>
-            <div className={"h-full bg-green-800"}></div>
-            <div
-              className={"flex h-full items-center justify-center bg-red-600"}
-            >
-              <Star
-                fill={"#fcc800"}
-                className={"h-1.5 w-1.5 text-yellow-400"}
-              />
-            </div>
-            <div className={"h-full bg-yellow-400"}></div>
-          </div>
+          <CmrFlag />
           {/* Top close button */}
           <button
             onClick={() => onReset?.()}
@@ -448,10 +438,11 @@ export function VerificationResult({
       )}
       {isSuccess && certificateData ? (
         /* VALID CERTIFICATE RESPONSE */
-        <div className="glass-card-valid relative animate-in space-y-5 rounded-2xl border-l-4 border-emerald-500 p-5 shadow-lg duration-300 fade-in-50 slide-in-from-bottom-5 md:p-6">
+        <div className="glass-card-valid relative overflow-hidden animate-in space-y-5 rounded-2xl border-l-4 border-emerald-500 p-5 shadow-lg duration-300 fade-in-50 slide-in-from-bottom-5 md:p-6">
           <AsacWatermark />
+          <CmrFlag />
           {/* Header Status & Download button */}
-          <div className="flex items-center justify-between gap-4 border-b border-emerald-500/10 pb-3">
+          <div className="flex flex-col gap-4 border-b border-emerald-500/10 pb-3">
             <div className="flex items-center gap-2.5">
               <div className="relative shrink-0">
                 {logoUrl ? (
