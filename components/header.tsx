@@ -2,7 +2,8 @@
 
 import { useTranslation } from "react-i18next"
 import { useTheme as useNextTheme } from "next-themes"
-import { Languages, Sun, Moon } from "lucide-react"
+import { Languages, Sun, Moon, ShieldAlert } from "lucide-react"
+import Link from "next/link"
 
 export function Header() {
   const { t, i18n } = useTranslation()
@@ -37,6 +38,18 @@ export function Header() {
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
+          {/* Security Alert Link */}
+          <Link
+            href="/security"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-850 border border-border text-slate-700 dark:text-slate-300 transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+            title="Security Center"
+          >
+            <ShieldAlert className="w-4 h-4 text-rose-500 animate-pulse" />
+            <span className="tracking-wide hidden sm:inline">
+              {i18n.language === "fr" ? "Sécurité" : "Security"}
+            </span>
+          </Link>
+
           {/* Language Switcher */}
           <button
             onClick={toggleLanguage}

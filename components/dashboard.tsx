@@ -11,6 +11,7 @@ import { ManualSearch } from "@/components/manual-search"
 import { VerificationHistory } from "@/components/verification-history"
 import { ResultViewport } from "@/components/result-viewport"
 import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link"
 
 import {
   QrCode,
@@ -21,6 +22,7 @@ import {
   SlidersHorizontal,
   FileCheck,
 } from "lucide-react"
+
 
 export function Dashboard() {
   const { t, i18n } = useTranslation()
@@ -323,13 +325,21 @@ export function Dashboard() {
 
       {/* Footer Details */}
       <footer className="mt-auto pt-12 text-center space-y-1">
-        <p className="text-[11px] text-muted-foreground font-semibold">
-          {t("app.footer")}
+        <p className="text-[11px] text-muted-foreground font-semibold flex items-center justify-center gap-1.5 flex-wrap">
+          <span>{t("app.footer")}</span>
+          <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">|</span>
+          <Link
+            href="/security"
+            className="text-primary hover:underline font-bold transition-all text-[11px]"
+          >
+            {isFr ? "Centre de Sécurité & Anti-Fraude" : "Security & Anti-Fraud Center"}
+          </Link>
         </p>
         <p className="text-[10px] text-muted-foreground/60 hidden md:block">
           {t("app.pressD")}
         </p>
       </footer>
+
     </div>
   )
 }

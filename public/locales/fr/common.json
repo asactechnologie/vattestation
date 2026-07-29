@@ -72,7 +72,17 @@
     "childState": "État",
     "childValidity": "Validité",
     "close": "Fermer",
-    "backToApp": "Retour à l'application"
+    "backToApp": "Retour à l'application",
+    "sendSms": "Recevoir par SMS",
+    "smsDialogTitle": "Recevoir le résultat par SMS",
+    "phoneLabel": "Numéro de téléphone",
+    "phonePlaceholder": "Ex: 6XXXXXXXX",
+    "smsHelpText": "Si le SMS reçu provient d'un expéditeur autre que 'ASAC', il s'agit d'un système FRAUDULEUX.",
+    "smsSending": "Envoi en cours...",
+    "smsSuccess": "SMS envoyé avec succès !",
+    "smsError": "Échec de l'envoi du SMS.",
+    "smsInvalidPhone": "Veuillez entrer un numéro de téléphone à 9 chiffres.",
+    "smsMessageTemplate": "Attestation VALIDE. Attestation : {{number}}. Compagnie : {{company}}. Véhicule : {{plate}}. Expire le : {{expiry}}."
   },
   "pwa": {
     "promptTitle": "Desktop & Mobile App",
@@ -80,5 +90,22 @@
     "installButton": "Installer maintenant",
     "dismissButton": "Plus tard",
     "iosTip": "Pour installer: appuyez sur le bouton de partage et sélectionnez 'Sur l'écran d'accueil'."
+  },
+  "security": {
+    "title": "Centre de Sécurité & Anti-Fraude",
+    "subtitle": "Protégez-vous contre les fausses attestations d'assurance.",
+    "back": "Retour",
+    "whyTitle": "Pourquoi est-ce important ?",
+    "whyDesc": "Les fraudeurs peuvent créer de faux portails de vérification imitant l'interface ASAC pour vous faire croire qu'une attestation invalide est authentique. Suivez ces 4 règles de sécurité pour valider la source de vérité.",
+    "rules": {
+      "urlTitle": "1. Vérifiez l'adresse internet (URL)",
+      "urlDesc": "L'adresse officielle est https://main.d1xy6cegmcvrxl.amplifyapp.com (les anciennes URL de redirection pointent également vers nos serveurs). Assurez-vous que l'adresse affichée dans la barre de votre navigateur correspond bien à nos domaines officiels.",
+      "watermarkTitle": "2. Filigrane officiel ASAC",
+      "watermarkDesc": "Le logo officiel de l'ASAC apparaît en arrière-plan sous forme de filigrane sécurisé sur les attestations valides.",
+      "logoTitle": "3. Logo dynamique de la compagnie",
+      "logoDesc": "Les logos officiels des compagnies d'assurance membres sont chargés de manière dynamique directement depuis nos serveurs sécurisés. Méfiez-vous des logos flous ou manquants.",
+      "smsTitle": "4. Expéditeur de SMS unique",
+      "smsDesc": "Toute notification SMS provenant d'ASAC doit obligatoirement avoir 'ASAC' comme identifiant de l'expéditeur. Si le message provient d'un numéro ordinaire, il s'agit d'une fraude !"
+    }
   }
 }
