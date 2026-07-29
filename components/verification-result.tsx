@@ -29,6 +29,7 @@ import {
 } from "lucide-react"
 import { AsacWatermark } from "@/components/AsacWatermark"
 import CmrFlag from "@/components/CmrFlag"
+import { Button } from "@/components/ui/button"
 
 
 interface VerificationResultProps {
@@ -324,7 +325,7 @@ export function VerificationResult({
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden bg-slate-50 dark:bg-slate-850 border border-border rounded-xl p-3 space-y-3"
+                  className="overflow-hidden bg-slate-50 dark:bg-slate-950/40 border border-border rounded-xl p-3 space-y-3"
                 >
                   <div className="flex items-center justify-between">
                     <h5 className="text-[11px] font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-1">
@@ -345,7 +346,7 @@ export function VerificationResult({
                   
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-1.5">
-                      <div className="flex items-center gap-1 bg-slate-205 dark:bg-slate-800 border border-border px-2 py-2 rounded-lg text-xs font-bold select-none text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-1 bg-slate-200 dark:bg-slate-800 border border-border px-2 py-2 rounded-lg text-xs font-bold select-none text-slate-700 dark:text-slate-300">
                         <span>🇨🇲</span>
                         <span>+237</span>
                       </div>
@@ -359,18 +360,17 @@ export function VerificationResult({
                         placeholder={t("result.phonePlaceholder")}
                         className="w-full bg-slate-100/60 dark:bg-slate-900 border border-border rounded-lg px-2 py-2 text-xs text-slate-800 dark:text-slate-100 font-semibold focus:outline-hidden focus:border-primary"
                       />
-                      <button
+                      <Button
                         onClick={handleSendSms}
                         disabled={smsStatus === "sending" || phoneNumber.length !== 9}
-                        className="cursor-pointer bg-primary disabled:bg-slate-300 disabled:dark:bg-slate-700 text-white rounded-lg px-3 py-2 text-xs font-bold hover:bg-primary/90 transition-all shrink-0"
                       >
                         {smsStatus === "sending" ? t("result.smsSending") : (isFr ? "Envoyer" : "Send")}
-                      </button>
+                      </Button>
                     </div>
                     
                     <div className="flex items-start gap-1.5 bg-rose-500/5 border border-rose-500/10 rounded-lg p-2">
                       <AlertTriangle className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
-                      <p className="text-[9px] leading-normal font-semibold text-slate-600 dark:text-slate-400 flex-grow">
+                      <p className="text-[9px] leading-normal font-semibold text-slate-600 dark:text-slate-400 grow">
                         {t("result.smsHelpText")}
                       </p>
                       <Link
@@ -506,7 +506,7 @@ export function VerificationResult({
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden bg-slate-50 dark:bg-slate-850 border border-border rounded-xl p-4 space-y-4"
+                className="overflow-hidden bg-slate-50 dark:bg-slate-950/40 border border-border rounded-xl p-4 space-y-4"
               >
                 <div className="flex items-center justify-between">
                   <h5 className="text-xs font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
@@ -528,7 +528,7 @@ export function VerificationResult({
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
                     {/* Fixed prefix container */}
-                    <div className="flex items-center gap-1.5 bg-slate-205 dark:bg-slate-800 border border-border px-3 py-2.5 rounded-xl text-xs font-bold select-none text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center gap-1.5 bg-slate-200 dark:bg-slate-800 border border-border px-3 py-2.5 rounded-xl text-xs font-bold select-none text-slate-700 dark:text-slate-300">
                       <span>🇨🇲</span>
                       <span>+237</span>
                     </div>
