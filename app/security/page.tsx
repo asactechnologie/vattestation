@@ -39,18 +39,18 @@ export default function SecurityPage() {
 
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col font-sans transition-colors duration-300">
+    <div className="flex min-h-screen flex-col bg-slate-50 font-sans transition-colors duration-300 dark:bg-slate-950">
       {/* Brand Header */}
       <Header />
 
-      <main className="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-10">
+      <main className="mx-auto flex w-full max-w-4xl flex-grow flex-col space-y-10 px-4 py-10 sm:px-6 lg:px-8">
         {/* Back Button */}
         <div>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs font-bold text-primary hover:underline cursor-pointer bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20 transition-all hover:scale-102"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary transition-all hover:scale-102 hover:underline"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="h-4 w-4" />
             <span>{t("security.back")}</span>
           </Link>
         </div>
@@ -60,19 +60,19 @@ export default function SecurityPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="relative overflow-hidden rounded-3xl border border-rose-500/10 dark:border-rose-500/20 bg-linear-to-br from-rose-500/5 via-transparent to-primary/5 p-6 sm:p-10 shadow-md text-center space-y-4"
+          className="relative space-y-4 overflow-hidden rounded-3xl border border-rose-500/10 bg-linear-to-br from-rose-500/5 via-transparent to-primary/5 p-6 text-center shadow-md sm:p-10 dark:border-rose-500/20"
         >
           {/* Decorative shapes */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="pointer-events-none absolute top-0 right-0 h-32 w-32 rounded-full bg-rose-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute bottom-0 left-0 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
 
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500 shadow-inner">
-            <ShieldAlert className="w-10 h-10 animate-pulse" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-500/10 text-rose-500 shadow-inner">
+            <ShieldAlert className="h-10 w-10 animate-pulse" />
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100">
+          <h1 className="text-2xl font-extrabold tracking-tight text-slate-800 sm:text-3xl md:text-4xl dark:text-slate-100">
             {t("security.title")}
           </h1>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-400">
             {t("security.subtitle")}
           </p>
         </motion.div>
@@ -82,23 +82,25 @@ export default function SecurityPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch"
+          className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-3"
         >
-          <div className="md:col-span-2 space-y-4 flex flex-col justify-center">
-            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-              <Lock className="w-5 h-5 text-primary" />
+          <div className="flex flex-col justify-center space-y-4 md:col-span-2">
+            <h2 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-slate-100">
+              <Lock className="h-5 w-5 text-primary" />
               {t("security.whyTitle")}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs leading-relaxed text-slate-600 sm:text-sm dark:text-slate-400">
               {t("security.whyDesc")}
             </p>
           </div>
-          <div className="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+          <div className="flex flex-col justify-between space-y-4 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5">
             <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-              <AlertTriangle className="w-5 h-5 shrink-0" />
-              <span className="text-xs font-extrabold uppercase tracking-wider">Warning / Alerte</span>
+              <AlertTriangle className="h-5 w-5 shrink-0" />
+              <span className="text-xs font-extrabold tracking-wider uppercase">
+                {t("security.warning")}
+              </span>
             </div>
-            <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs leading-relaxed font-semibold text-slate-600 dark:text-slate-400">
               {isFr
                 ? "Ne faites jamais confiance aux résultats de vérification provenant d'URL suspectes ou de SMS envoyés par des numéros mobiles classiques."
                 : "Never trust verification results loaded from unrecognized domain URLs or SMS sent by standard phone numbers."}
@@ -111,26 +113,26 @@ export default function SecurityPage() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
           {/* Rule 1: URL Check */}
           <motion.div
             variants={itemVariants}
-            className="group relative bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 hover:border-primary/30 flex flex-col space-y-4"
+            className="group relative flex flex-col space-y-4 rounded-2xl border border-slate-200/60 bg-white p-6 shadow-xs transition-all duration-300 hover:border-primary/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
-            <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Globe className="w-5 h-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-110">
+              <Globe className="h-5 w-5" />
             </div>
-            <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 group-hover:text-primary transition-colors">
+            <h3 className="text-sm font-extrabold text-slate-800 transition-colors group-hover:text-primary sm:text-base dark:text-slate-100">
               {t("security.rules.urlTitle")}
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed flex-grow">
+            <p className="flex-grow text-xs leading-relaxed text-slate-600 dark:text-slate-400">
               {t("security.rules.urlDesc")}
             </p>
             <div className="pt-2">
-              <div className="bg-slate-100 dark:bg-slate-950 p-2.5 rounded-lg border border-slate-200/50 dark:border-slate-800 text-[10px] sm:text-[11px] font-mono text-primary break-all select-all flex items-center justify-between">
+              <div className="flex items-center justify-between rounded-lg border border-slate-200/50 bg-slate-100 p-2.5 font-mono text-[10px] break-all text-primary select-all sm:text-[11px] dark:border-slate-800 dark:bg-slate-950">
                 <span>https://vattestation.asac-cameroun.org</span>
-                <Globe className="w-3.5 h-3.5 opacity-60 ml-2 shrink-0" />
+                <Globe className="ml-2 h-3.5 w-3.5 shrink-0 opacity-60" />
               </div>
             </div>
           </motion.div>
@@ -138,61 +140,64 @@ export default function SecurityPage() {
           {/* Rule 2: Watermark Check */}
           <motion.div
             variants={itemVariants}
-            className="group relative bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 hover:border-emerald-500/30 flex flex-col space-y-4"
+            className="group relative flex flex-col space-y-4 rounded-2xl border border-slate-200/60 bg-white p-6 shadow-xs transition-all duration-300 hover:border-emerald-500/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Droplets className="w-5 h-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 transition-transform group-hover:scale-110 dark:text-emerald-400">
+              <Droplets className="h-5 w-5" />
             </div>
-            <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+            <h3 className="text-sm font-extrabold text-slate-800 transition-colors group-hover:text-emerald-600 sm:text-base dark:text-slate-100 dark:group-hover:text-emerald-400">
               {t("security.rules.watermarkTitle")}
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed flex-grow">
+            <p className="flex-grow text-xs leading-relaxed text-slate-600 dark:text-slate-400">
               {t("security.rules.watermarkDesc")}
             </p>
-            <div className="pt-2 flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-bold bg-emerald-500/5 rounded-lg p-2 border border-emerald-500/10">
-              <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>Visible in results background / Arrière-plan filigrane</span>
+            <div className="flex items-center gap-1.5 rounded-lg border border-emerald-500/10 bg-emerald-500/5 p-2 pt-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+              <ShieldCheck className="h-4 w-4 shrink-0" />
+              <span>{t("security.visibleInBackground")}</span>
             </div>
           </motion.div>
 
           {/* Rule 3: Company Logo */}
           <motion.div
             variants={itemVariants}
-            className="group relative bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 hover:border-amber-500/30 flex flex-col space-y-4"
+            className="group relative flex flex-col space-y-4 rounded-2xl border border-slate-200/60 bg-white p-6 shadow-xs transition-all duration-300 hover:border-amber-500/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Building2 className="w-5 h-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 transition-transform group-hover:scale-110 dark:text-amber-400">
+              <Building2 className="h-5 w-5" />
             </div>
-            <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+            <h3 className="text-sm font-extrabold text-slate-800 transition-colors group-hover:text-amber-600 sm:text-base dark:text-slate-100 dark:group-hover:text-amber-400">
               {t("security.rules.logoTitle")}
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed flex-grow">
+            <p className="flex-grow text-xs leading-relaxed text-slate-600 dark:text-slate-400">
               {t("security.rules.logoDesc")}
             </p>
-            <div className="pt-2 flex items-center gap-1.5 text-amber-600 dark:text-amber-400 text-xs font-bold bg-amber-500/5 rounded-lg p-2 border border-amber-500/10">
-              <Eye className="w-4 h-4 shrink-0" />
-              <span>Loaded from ASAC member registry / Flux ASAC officiel</span>
+            <div className="flex items-center gap-1.5 rounded-lg border border-amber-500/10 bg-amber-500/5 p-2 pt-2 text-xs font-bold text-amber-600 dark:text-amber-400">
+              <Eye className="h-4 w-4 shrink-0" />
+              <span>{t("security.loadedFromAsac")}</span>
             </div>
           </motion.div>
 
           {/* Rule 4: SMS Sender ID */}
           <motion.div
             variants={itemVariants}
-            className="group relative bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 hover:border-rose-500/30 flex flex-col space-y-4"
+            className="group relative flex flex-col space-y-4 rounded-2xl border border-slate-200/60 bg-white p-6 shadow-xs transition-all duration-300 hover:border-rose-500/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
-            <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <MessageSquare className="w-5 h-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-500/10 text-rose-500 transition-transform group-hover:scale-110">
+              <MessageSquare className="h-5 w-5" />
             </div>
-            <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 group-hover:text-rose-500 transition-colors">
+            <h3 className="text-sm font-extrabold text-slate-800 transition-colors group-hover:text-rose-500 sm:text-base dark:text-slate-100">
               {t("security.rules.smsTitle")}
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed flex-grow">
+            <p className="grow text-xs leading-relaxed text-slate-600 dark:text-slate-400">
               {t("security.rules.smsDesc")}
             </p>
             <div className="pt-2">
-              <div className="bg-rose-500/10 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 p-2.5 rounded-lg border border-rose-500/20 text-xs font-bold flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                <span>Sender ID: "ASAC" (Only / Uniquement)</span>
+              <div className="flex items-center gap-2 rounded-lg border border-rose-500/20 bg-rose-500/10 p-2.5 text-xs font-bold text-rose-600 dark:bg-rose-950/20 dark:text-rose-400">
+                <CheckCircle className="h-4 w-4 shrink-0 text-rose-500" />
+                <span>
+                  {t("security.senderId")}: &#34;ASAC&#34; ({t("security.only")}
+                  )
+                </span>
               </div>
             </div>
           </motion.div>
@@ -203,13 +208,15 @@ export default function SecurityPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="border-l-4 border-rose-500 bg-rose-500/5 rounded-r-2xl p-5 shadow-xs"
+          className="rounded-r-2xl border-l-4 border-rose-500 bg-rose-500/5 p-5 shadow-xs"
         >
           <div className="flex items-start gap-3">
-            <ShieldAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
+            <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-rose-500" />
             <div className="space-y-1">
-              <p className="text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider">
-                {isFr ? "Comment repérer une tentative d'hameçonnage" : "How to spot a phishing attempt"}
+              <p className="text-xs font-bold tracking-wider text-rose-700 uppercase dark:text-rose-400">
+                {isFr
+                  ? "Comment repérer une tentative d'hameçonnage"
+                  : "How to spot a phishing attempt"}
               </p>
               <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
                 {isFr
@@ -222,8 +229,8 @@ export default function SecurityPage() {
       </main>
 
       {/* Footer details */}
-      <footer className="py-8 text-center border-t border-slate-200/60 dark:border-slate-800 mt-auto bg-slate-100/50 dark:bg-slate-900/30">
-        <p className="text-[11px] text-muted-foreground font-semibold">
+      <footer className="mt-auto border-t border-slate-200/60 bg-slate-100/50 py-8 text-center dark:border-slate-800 dark:bg-slate-900/30">
+        <p className="text-[11px] font-semibold text-muted-foreground">
           {t("app.footer")}
         </p>
       </footer>

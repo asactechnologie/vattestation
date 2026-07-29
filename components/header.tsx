@@ -19,13 +19,13 @@ export function Header() {
       <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <div className="flex items-center gap-2">
-          <div className="w-14 h-14 rounded-xl flex items-center justify-center">
+          <Link href={"/"} className="w-14 h-14 rounded-xl flex items-center justify-center">
             <img
               src="/assets/logo_asac.png"
               alt="Logo ASAC"
               className={"h-full w-auto object-center dark:brightness-0 dark:invert"}
             />
-          </div>
+          </Link>
           <div>
             <span className="font-bold text-slate-800 dark:text-slate-100 tracking-tight text-base">
               ASAC

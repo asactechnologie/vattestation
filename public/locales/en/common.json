@@ -99,13 +99,18 @@
     "whyDesc": "Fraudsters may create fake verification portals mimicking the ASAC interface to trick you into believing an invalid certificate is authentic. Always follow these 4 security safeguards to establish the source of truth.",
     "rules": {
       "urlTitle": "1. Verify the Domain URL",
-      "urlDesc": "The official verification portal is located at https://main.d1xy6cegmcvrxl.amplifyapp.com (legacy URL links point to our official gateway). Make sure the address bar in your browser matches this URL.",
+      "urlDesc": "The official verification portal is located at https://vattestation.asac-cameroun.org (legacy URL links point to our official gateway). Make sure the address bar in your browser matches this URL.",
       "watermarkTitle": "2. Official ASAC Watermark",
       "watermarkDesc": "The official ASAC logo is embedded securely in the background of valid attestation displays.",
       "logoTitle": "3. Dynamic Member Logo",
       "logoDesc": "Official logos of insurance company members are loaded dynamically from our secure databases. Beware of generic or broken images.",
       "smsTitle": "4. Verified SMS Sender ID",
       "smsDesc": "Any SMS results dispatched from our systems must strictly arrive under the 'ASAC' alphanumeric sender ID. If it is sent by a standard mobile number, it is fraudulent!"
-    }
+    },
+    "visibleInBackground": "Visible in results background",
+    "loadedFromAsac": "Loaded from ASAC member registry",
+    "senderId": "Sender ID",
+    "only": "Only",
+    "warning": "Warning"
   }
 }

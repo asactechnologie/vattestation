@@ -99,13 +99,18 @@
     "whyDesc": "Les fraudeurs peuvent créer de faux portails de vérification imitant l'interface ASAC pour vous faire croire qu'une attestation invalide est authentique. Suivez ces 4 règles de sécurité pour valider la source de vérité.",
     "rules": {
       "urlTitle": "1. Vérifiez l'adresse internet (URL)",
-      "urlDesc": "L'adresse officielle est https://main.d1xy6cegmcvrxl.amplifyapp.com (les anciennes URL de redirection pointent également vers nos serveurs). Assurez-vous que l'adresse affichée dans la barre de votre navigateur correspond bien à nos domaines officiels.",
+      "urlDesc": "L'adresse officielle est https://vattestation.asac-cameroun.org (les anciennes URL de redirection pointent également vers nos serveurs). Assurez-vous que l'adresse affichée dans la barre de votre navigateur correspond bien à nos domaines officiels.",
       "watermarkTitle": "2. Filigrane officiel ASAC",
       "watermarkDesc": "Le logo officiel de l'ASAC apparaît en arrière-plan sous forme de filigrane sécurisé sur les attestations valides.",
       "logoTitle": "3. Logo dynamique de la compagnie",
       "logoDesc": "Les logos officiels des compagnies d'assurance membres sont chargés de manière dynamique directement depuis nos serveurs sécurisés. Méfiez-vous des logos flous ou manquants.",
       "smsTitle": "4. Expéditeur de SMS unique",
       "smsDesc": "Toute notification SMS provenant d'ASAC doit obligatoirement avoir 'ASAC' comme identifiant de l'expéditeur. Si le message provient d'un numéro ordinaire, il s'agit d'une fraude !"
-    }
+    },
+    "visibleInBackground": "Arrière-plan filigrane",
+    "loadedFromAsac": "Flux ASAC officiel",
+    "senderId": "Expéditeur",
+    "only": "Uniquement",
+    "warning": "Alerte"
   }
 }
