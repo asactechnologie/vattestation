@@ -82,7 +82,12 @@
     "smsSuccess": "SMS sent successfully!",
     "smsError": "Failed to send SMS.",
     "smsInvalidPhone": "Please enter a valid 9-digit phone number.",
-    "smsMessageTemplate": "VALID Certificate. Certificate: {{number}}. Company: {{company}}. Vehicle: {{plate}}. Expiry: {{expiry}}."
+    "smsMessageTemplate": "VALID Certificate. Certificate: {{number}}. Company: {{company}}. Vehicle: {{plate}}. Expiry: {{expiry}}.",
+    "verifyViaWhatsapp": "Verify via WhatsApp",
+    "whatsappDialogTitle": "Official ASAC WhatsApp ChatBot",
+    "whatsappHelpText": "Verification via WhatsApp is 100% free. Open a chat with our official ChatBot with your pre-filled inquiry.",
+    "openWhatsapp": "Open WhatsApp ChatBot",
+    "whatsappMessageTemplate": "{{query}}"
   },
   "pwa": {
     "promptTitle": "Desktop & Mobile App",
@@ -105,11 +110,14 @@
       "logoTitle": "3. Dynamic Member Logo",
       "logoDesc": "Official logos of insurance company members are loaded dynamically from our secure databases. Beware of generic or broken images.",
       "smsTitle": "4. Verified SMS Sender ID",
-      "smsDesc": "Any SMS results dispatched from our systems must strictly arrive under the 'ASAC' alphanumeric sender ID. If it is sent by a standard mobile number, it is fraudulent!"
+      "smsDesc": "Any SMS results dispatched from our systems must strictly arrive under the 'ASAC' alphanumeric sender ID. If it is sent by a standard mobile number, it is fraudulent!",
+      "whatsappTitle": "4. Official WhatsApp ChatBot",
+      "whatsappDesc": "Authenticate certificates directly with our official ASAC WhatsApp ChatBot. User-initiated conversations are 100% free and protected against fraudulent systems."
     },
     "visibleInBackground": "Visible in results background",
     "loadedFromAsac": "Loaded from ASAC member registry",
     "senderId": "Sender ID",
+    "officialBot": "Official Bot Number",
     "only": "Only",
     "warning": "Warning"
   }

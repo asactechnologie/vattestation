@@ -26,6 +26,7 @@ import {
   StarIcon,
   Smartphone,
   HelpCircle,
+  MessageCircle,
 } from "lucide-react"
 import { AsacWatermark } from "@/components/AsacWatermark"
 import CmrFlag from "@/components/CmrFlag"
@@ -55,10 +56,23 @@ export function VerificationResult({
   const [imageError, setImageError] = useState<Record<string, boolean>>({})
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
   const [loadingLogo, setLoadingLogo] = useState(false)
+  const [showWhatsappInput, setShowWhatsappInput] = useState(false)
+  // Preserved SMS state & functions for future re-activation
   const [showSmsInput, setShowSmsInput] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [smsStatus, setSmsStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
   const [smsErrorMsg, setSmsErrorMsg] = useState("")
+
+  const getWhatsAppBotNumber = () => {
+    const envVal = process.env.NEXT_PUBLIC_WHATSAPP_BOT_NUMBER
+    return envVal ? envVal.replace(/\D/g, "") : "237600000000"
+  }
+
+  const getWhatsAppUrl = (queryText: string) => {
+    const botNumber = getWhatsAppBotNumber()
+    const text = `${queryText}`
+    return `https://wa.me/${botNumber}?text=${encodeURIComponent(text)}`
+  }
 
   const isSuccess = apiResponse?.status
   const certificateData = apiResponse?.data?.[0]
@@ -310,96 +324,53 @@ export function VerificationResult({
             </div>
           </div>
 
-          {/* SMS Delivery Option */}
+          {/* WhatsApp Verification Option */}
           <div className="mb-2 w-full space-y-2">
             <button
-              onClick={() => setShowSmsInput(!showSmsInput)}
-              className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-primary/10 bg-primary/5 py-2 text-xs font-bold text-primary transition-all hover:bg-primary/10 hover:underline"
+              onClick={() => setShowWhatsappInput(!showWhatsappInput)}
+              className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 py-2 text-xs font-bold text-emerald-600 transition-all hover:bg-emerald-500/20 dark:text-emerald-400"
             >
-              <Smartphone className="h-4 w-4 text-primary" />
-              <span>{t("result.sendSms")}</span>
+              <MessageCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              <span>{t("result.verifyViaWhatsapp")}</span>
             </button>
             <AnimatePresence>
-              {showSmsInput && (
+              {showWhatsappInput && (
                 <motion.div
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="space-y-3 overflow-hidden rounded-xl border border-border bg-slate-50 p-3 dark:bg-slate-950/40"
+                  className="space-y-3 overflow-hidden rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 dark:bg-slate-950/60"
                 >
                   <div className="flex items-center justify-between">
-                    <h5 className="flex items-center gap-1 text-[11px] font-extrabold text-slate-800 dark:text-slate-100">
-                      <Smartphone className="h-3.5 w-3.5 text-primary" />
-                      {t("result.smsDialogTitle")}
+                    <h5 className="flex items-center gap-1 text-[11px] font-extrabold text-emerald-800 dark:text-emerald-400">
+                      <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
+                      {t("result.whatsappDialogTitle")}
                     </h5>
                     <button
-                      onClick={() => {
-                        setShowSmsInput(false)
-                        setSmsStatus("idle")
-                        setPhoneNumber("")
-                      }}
-                      className="hover:text-slate-650 cursor-pointer rounded-full p-0.5 text-slate-400 hover:bg-slate-100"
+                      onClick={() => setShowWhatsappInput(false)}
+                      className="cursor-pointer rounded-full p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
                     >
                       <X className="h-3 w-3" />
                     </button>
                   </div>
 
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-1.5">
-                      <div className="flex items-center gap-1 rounded-lg border border-border bg-slate-200 px-2 py-2 text-xs font-bold text-slate-700 select-none dark:bg-slate-800 dark:text-slate-300">
-                        <span>🇨🇲</span>
-                        <span>+237</span>
-                      </div>
-                      <input
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(e) => {
-                          const val = e.target.value.replace(/\D/g, "")
-                          if (val.length <= 9) setPhoneNumber(val)
-                        }}
-                        placeholder={t("result.phonePlaceholder")}
-                        className="w-full rounded-lg border border-border bg-slate-100/60 px-2 py-2 text-xs font-semibold text-slate-800 focus:border-primary focus:outline-hidden dark:bg-slate-900 dark:text-slate-100"
-                      />
-                      <Button
-                        onClick={handleSendSms}
-                        disabled={
-                          smsStatus === "sending" || phoneNumber.length !== 9
-                        }
-                        className={"text-xs font-bold"}
-                      >
-                        {smsStatus === "sending"
-                          ? t("result.smsSending")
-                          : isFr
-                            ? "Envoyer"
-                            : "Send"}
-                      </Button>
-                    </div>
+                  <p className="text-[10px] leading-relaxed text-slate-600 dark:text-slate-400">
+                    {t("result.whatsappHelpText")}
+                  </p>
 
-                    <div className="flex items-start gap-1.5 rounded-lg border border-rose-500/10 bg-rose-500/5 p-2">
-                      <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-500" />
-                      <p className="grow text-[9px] leading-normal font-semibold text-slate-600 dark:text-slate-400">
-                        {t("result.smsHelpText")}
-                      </p>
-                      <Link
-                        href="/security"
-                        className="shrink-0 self-center text-[9px] font-bold text-rose-500 hover:underline"
-                      >
-                        {isFr ? "Sécurité" : "Security"}
-                      </Link>
-                    </div>
-
-                    {smsStatus === "success" && (
-                      <div className="rounded-md border border-emerald-500/10 bg-emerald-500/5 p-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                        {t("result.smsSuccess")}
-                      </div>
+                  <a
+                    href={getWhatsAppUrl(
+                      certificateData?.numero_immatriculation ||
+                        certificateData?.numero_attestation ||
+                        searchQuery
                     )}
-                    {smsStatus === "error" && (
-                      <div className="rounded-md border border-rose-500/10 bg-rose-500/5 p-1.5 text-[10px] font-bold text-rose-600 dark:text-rose-400">
-                        {t("result.smsError")}{" "}
-                        {smsErrorMsg && `: ${smsErrorMsg}`}
-                      </div>
-                    )}
-                  </div>
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white shadow-xs transition-all hover:bg-emerald-700 active:bg-emerald-800"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    <span>{t("result.openWhatsapp")}</span>
+                  </a>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -482,12 +453,12 @@ export function VerificationResult({
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <button
-                onClick={() => setShowSmsInput(!showSmsInput)}
-                className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary shadow-xs transition-all hover:bg-primary/20 hover:text-primary"
+                onClick={() => setShowWhatsappInput(!showWhatsappInput)}
+                className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-600 shadow-xs transition-all hover:bg-emerald-500/20 dark:text-emerald-400"
               >
-                <Smartphone className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{t("result.sendSms")}</span>
-                <span className="sm:hidden">SMS</span>
+                <MessageCircle className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t("result.verifyViaWhatsapp")}</span>
+                <span className="sm:hidden">WhatsApp</span>
               </button>
               {certificateData.download_link && (
                 <a
@@ -506,90 +477,53 @@ export function VerificationResult({
             </div>
           </div>
 
-          {/* SMS input panel for standard view */}
+          {/* WhatsApp Verification Panel */}
           <AnimatePresence>
-            {showSmsInput && (
+            {showWhatsappInput && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="space-y-4 overflow-hidden rounded-xl border border-border bg-slate-50 p-4 dark:bg-slate-950/40"
+                className="space-y-4 overflow-hidden rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 dark:bg-slate-950/60"
               >
                 <div className="flex items-center justify-between">
-                  <h5 className="flex items-center gap-1.5 text-xs font-extrabold text-slate-800 dark:text-slate-100">
-                    <Smartphone className="h-4 w-4 text-primary" />
-                    {t("result.smsDialogTitle")}
+                  <h5 className="flex items-center gap-1.5 text-xs font-extrabold text-emerald-800 dark:text-emerald-400">
+                    <MessageCircle className="h-4 w-4 text-emerald-600" />
+                    {t("result.whatsappDialogTitle")}
                   </h5>
                   <button
-                    onClick={() => {
-                      setShowSmsInput(false)
-                      setSmsStatus("idle")
-                      setPhoneNumber("")
-                    }}
-                    className="hover:text-slate-655 cursor-pointer rounded-full p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                    onClick={() => setShowWhatsappInput(false)}
+                    className="cursor-pointer rounded-full p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-2">
-                    {/* Fixed prefix container */}
-                    <div className="flex items-center gap-1.5 rounded-xl border border-border bg-slate-200 px-3 py-2.5 text-xs font-bold text-slate-700 select-none dark:bg-slate-800 dark:text-slate-300">
-                      <span>🇨🇲</span>
-                      <span>+237</span>
-                    </div>
-                    {/* Phone input digits only */}
-                    <input
-                      type="tel"
-                      value={phoneNumber}
-                      onChange={(e) => {
-                        const val = e.target.value.replace(/\D/g, "")
-                        if (val.length <= 9) setPhoneNumber(val)
-                      }}
-                      placeholder={t("result.phonePlaceholder")}
-                      className="w-full rounded-xl border border-border bg-slate-100/60 px-3 py-2.5 text-xs font-semibold text-slate-800 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-hidden dark:bg-slate-900 dark:text-slate-100"
-                    />
-                    <Button
-                      onClick={handleSendSms}
-                      disabled={
-                        smsStatus === "sending" || phoneNumber.length !== 9
-                      }
-                      className="text-base font-bold"
-                    >
-                      {smsStatus === "sending"
-                        ? t("result.smsSending")
-                        : isFr
-                          ? "Envoyer"
-                          : "Send"}
-                    </Button>
+                  <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+                    {t("result.whatsappHelpText")}
+                  </p>
+
+                  <div className="flex items-center justify-between rounded-xl border border-emerald-500/20 bg-white/80 p-3 font-mono text-xs dark:bg-slate-900/80">
+                    <span className="text-slate-500 dark:text-slate-400">Message template:</span>
+                    <span className="font-bold text-emerald-700 dark:text-emerald-400">
+                      {certificateData?.numero_immatriculation || certificateData?.numero_attestation || searchQuery}
+                    </span>
                   </div>
 
-                  {/* Warning / Help anti-fraud overlay */}
-                  <div className="flex items-start gap-2 rounded-xl border border-rose-500/20 bg-rose-500/5 p-3 dark:bg-rose-500/10">
-                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-500" />
-                    <p className="text-slate-650 flex-grow text-[10px] leading-relaxed font-semibold dark:text-slate-400">
-                      {t("result.smsHelpText")}
-                    </p>
-                    <Link
-                      href="/security"
-                      className="shrink-0 self-center text-[10px] font-bold text-rose-500 hover:underline"
-                    >
-                      {isFr ? "En savoir plus" : "Learn more"}
-                    </Link>
-                  </div>
-
-                  {/* Status responses */}
-                  {smsStatus === "success" && (
-                    <div className="rounded-lg border border-emerald-500/10 bg-emerald-500/5 p-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                      {t("result.smsSuccess")}
-                    </div>
-                  )}
-                  {smsStatus === "error" && (
-                    <div className="rounded-lg border border-rose-500/10 bg-rose-500/5 p-2 text-xs font-bold text-rose-600 dark:text-rose-400">
-                      {t("result.smsError")} {smsErrorMsg && `: ${smsErrorMsg}`}
-                    </div>
-                  )}
+                  <a
+                    href={getWhatsAppUrl(
+                      certificateData?.numero_immatriculation ||
+                        certificateData?.numero_attestation ||
+                        searchQuery
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:bg-emerald-700 active:bg-emerald-800"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    <span>{t("result.openWhatsapp")}</span>
+                  </a>
                 </div>
               </motion.div>
             )}

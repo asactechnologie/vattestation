@@ -177,26 +177,26 @@ export default function SecurityPage() {
             </div>
           </motion.div>
 
-          {/* Rule 4: SMS Sender ID */}
+          {/* Rule 4: Official WhatsApp ChatBot */}
           <motion.div
             variants={itemVariants}
-            className="group relative flex flex-col space-y-4 rounded-2xl border border-slate-200/60 bg-white p-6 shadow-xs transition-all duration-300 hover:border-rose-500/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+            className="group relative flex flex-col space-y-4 rounded-2xl border border-slate-200/60 bg-white p-6 shadow-xs transition-all duration-300 hover:border-emerald-500/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-500/10 text-rose-500 transition-transform group-hover:scale-110">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 transition-transform group-hover:scale-110 dark:text-emerald-400">
               <MessageSquare className="h-5 w-5" />
             </div>
-            <h3 className="text-sm font-extrabold text-slate-800 transition-colors group-hover:text-rose-500 sm:text-base dark:text-slate-100">
-              {t("security.rules.smsTitle")}
+            <h3 className="text-sm font-extrabold text-slate-800 transition-colors group-hover:text-emerald-600 sm:text-base dark:text-slate-100 dark:group-hover:text-emerald-400">
+              {t("security.rules.whatsappTitle")}
             </h3>
             <p className="grow text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-              {t("security.rules.smsDesc")}
+              {t("security.rules.whatsappDesc")}
             </p>
             <div className="pt-2">
-              <div className="flex items-center gap-2 rounded-lg border border-rose-500/20 bg-rose-500/10 p-2.5 text-xs font-bold text-rose-600 dark:bg-rose-950/20 dark:text-rose-400">
-                <CheckCircle className="h-4 w-4 shrink-0 text-rose-500" />
+              <div className="flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-2.5 text-xs font-bold text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-400">
+                <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
                 <span>
-                  {t("security.senderId")}: &#34;ASAC&#34; ({t("security.only")}
-                  )
+                  {t("security.officialBot")}: +
+                  {process.env.NEXT_PUBLIC_WHATSAPP_BOT_NUMBER || "237 600 000 000"}
                 </span>
               </div>
             </div>
@@ -220,8 +220,8 @@ export default function SecurityPage() {
               </p>
               <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
                 {isFr
-                  ? "Si vous recevez un SMS de confirmation d'attestation avec un numéro à 9 chiffres classique (ex: +237 6xx xx xx xx) au lieu de l'expéditeur Alphanumérique 'ASAC', cela signifie que l'attestation provient d'un système tiers contrefait. Veuillez signaler immédiatement l'incident à votre assureur."
-                  : "If you receive an attestation validation SMS from a normal 9-digit telephone number (e.g. +237 6xx xx xx xx) instead of the Alphanumeric Sender ID 'ASAC', it indicates that the certificate validation page is a fake or counterfeit mirror. Report this event immediately to your insurer."}
+                  ? "Pour votre sécurité, privilégiez toujours la vérification directe via notre portail officiel ou notre ChatBot WhatsApp officiel. ASAC ne vous demandera jamais d'argent pour vérifier l'authenticité d'une attestation. Signalez immédiatement tout numéro suspect à votre compagnie d'assurance."
+                  : "For your security, always use direct verification via our official portal or our official WhatsApp ChatBot. ASAC will never charge fees for verifying certificate authenticity. Report any suspicious number immediately to your insurer."}
               </p>
             </div>
           </div>

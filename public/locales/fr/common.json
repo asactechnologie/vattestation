@@ -82,7 +82,12 @@
     "smsSuccess": "SMS envoyé avec succès !",
     "smsError": "Échec de l'envoi du SMS.",
     "smsInvalidPhone": "Veuillez entrer un numéro de téléphone à 9 chiffres.",
-    "smsMessageTemplate": "Attestation VALIDE. Attestation : {{number}}. Compagnie : {{company}}. Véhicule : {{plate}}. Expire le : {{expiry}}."
+    "smsMessageTemplate": "Attestation VALIDE. Attestation : {{number}}. Compagnie : {{company}}. Véhicule : {{plate}}. Expire le : {{expiry}}.",
+    "verifyViaWhatsapp": "Vérifier via WhatsApp",
+    "whatsappDialogTitle": "ChatBot WhatsApp Officiel ASAC",
+    "whatsappHelpText": "La vérification d'authenticité via WhatsApp est 100% gratuite. L'ouverture de WhatsApp pré-remplit votre demande pour une vérification instantanée.",
+    "openWhatsapp": "Ouvrir dans WhatsApp",
+    "whatsappMessageTemplate": "{{query}}"
   },
   "pwa": {
     "promptTitle": "Desktop & Mobile App",
@@ -105,11 +110,14 @@
       "logoTitle": "3. Logo dynamique de la compagnie",
       "logoDesc": "Les logos officiels des compagnies d'assurance membres sont chargés de manière dynamique directement depuis nos serveurs sécurisés. Méfiez-vous des logos flous ou manquants.",
       "smsTitle": "4. Expéditeur de SMS unique",
-      "smsDesc": "Toute notification SMS provenant d'ASAC doit obligatoirement avoir 'ASAC' comme identifiant de l'expéditeur. Si le message provient d'un numéro ordinaire, il s'agit d'une fraude !"
+      "smsDesc": "Toute notification SMS provenant d'ASAC doit obligatoirement avoir 'ASAC' comme identifiant de l'expéditeur. Si le message provient d'un numéro ordinaire, il s'agit d'une fraude !",
+      "whatsappTitle": "4. ChatBot WhatsApp Officiel",
+      "whatsappDesc": "Authentifiez vos attestations directement avec notre ChatBot WhatsApp officiel ASAC. Les échanges initiés par l'utilisateur sont 100% gratuits et protégés contre les tentatives de fraude."
     },
     "visibleInBackground": "Arrière-plan filigrane",
     "loadedFromAsac": "Flux ASAC officiel",
     "senderId": "Expéditeur",
+    "officialBot": "Numéro Bot Officiel",
     "only": "Uniquement",
     "warning": "Alerte"
   }
