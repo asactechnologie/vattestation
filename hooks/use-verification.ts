@@ -1,8 +1,16 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { AttestationStatusCode, VerificationResponse } from "@/lib/strategies/types"
 
 interface UseVerificationOptions {
-  addToHistory: (infoValue: string, success: boolean, message: string, data?: any, fromScan?: boolean) => void
+  addToHistory: (
+    infoValue: string,
+    success: boolean,
+    message: string,
+    data?: any,
+    fromScan?: boolean,
+    statusCode?: AttestationStatusCode
+  ) => void
 }
 
 /**
@@ -18,7 +26,7 @@ export function sanitizeVerificationInput(input: string): string {
 export function useVerification({ addToHistory }: UseVerificationOptions) {
   const { t } = useTranslation()
   const [isVerifying, setIsVerifying] = useState(false)
-  const [apiResponse, setApiResponse] = useState<any | null>(null)
+  const [apiResponse, setApiResponse] = useState<VerificationResponse | null>(null)
   const [apiError, setApiError] = useState<string | null>(null)
   const [wasScanned, setWasScanned] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -42,20 +50,24 @@ export function useVerification({ addToHistory }: UseVerificationOptions) {
         body: JSON.stringify({ info: sanitized }),
       })
 
-      const result = await res.json()
+      const result: VerificationResponse = await res.json()
+      setApiResponse(result)
 
-      if (res.ok && result.status) {
-        setApiResponse(result)
-        addToHistory(sanitized, true, result.message || "Valide", result.data, fromScan)
+      const isCovered = result.est_couvert ?? result.status ?? false
+      const statusCode: AttestationStatusCode = result.statut?.code || (isCovered ? "VALIDE" : "INTROUVABLE")
+      const message = result.message || (isCovered ? t("result.valid") : t("result.invalidMessage"))
+
+      if (!isCovered && statusCode === "INTROUVABLE" && (!result.data || result.data.length === 0)) {
+        setApiError(message)
       } else {
-        setApiResponse(result)
-        setApiError(result.message || t("result.invalidMessage"))
-        addToHistory(sanitized, false, result.message || "Invalide", undefined, fromScan)
+        setApiError(null)
       }
+
+      addToHistory(sanitized, isCovered, message, result.data, fromScan, statusCode)
     } catch (err: unknown) {
       console.error(err)
       setApiError(t("result.networkError"))
-      addToHistory(sanitized, false, t("result.networkError"), undefined, fromScan)
+      addToHistory(sanitized, false, t("result.networkError"), undefined, fromScan, "INTROUVABLE")
     } finally {
       setIsVerifying(false)
     }

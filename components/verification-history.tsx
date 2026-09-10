@@ -33,7 +33,7 @@ export function VerificationHistory({
         hour: "2-digit",
         minute: "2-digit",
       })
-    } catch (e) {
+    } catch {
       return dateString
     }
   }
@@ -42,6 +42,43 @@ export function VerificationHistory({
     if (confirm(t("history.clearConfirm"))) {
       onClearAll()
     }
+  }
+
+  const renderStatusIndicator = (item: HistoryItem) => {
+    const code = item.statusCode || (item.status ? "VALIDE" : "INTROUVABLE")
+    switch (code) {
+      case "VALIDE":
+        return <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] shrink-0" title={t("status.valide", "Valide")} />
+      case "SUSPENDUE":
+        return <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b] shrink-0" title={t("status.suspendue", "Suspendue")} />
+      case "ANNULEE":
+        return <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e] shrink-0" title={t("status.annulee", "Annulée")} />
+      case "EXPIREE":
+        return <span className="w-2 h-2 rounded-full bg-rose-400 shadow-[0_0_8px_#fb7185] shrink-0" title={t("status.expiree", "Expirée")} />
+      case "A_VENIR":
+        return <span className="w-2 h-2 rounded-full bg-sky-500 shadow-[0_0_8px_#0ea5e9] shrink-0" title={t("status.a_venir", "À venir")} />
+      case "INTROUVABLE":
+      default:
+        return <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e] shrink-0" title={t("status.introuvable", "Introuvable")} />
+    }
+  }
+
+  const renderStatusBadge = (item: HistoryItem) => {
+    const code = item.statusCode
+    if (!code || code === "VALIDE") return null
+
+    let badgeClasses = "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20"
+    if (code === "SUSPENDUE") {
+      badgeClasses = "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
+    } else if (code === "A_VENIR") {
+      badgeClasses = "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20"
+    }
+
+    return (
+      <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border ${badgeClasses}`}>
+        {t(`status.${code.toLowerCase()}`, code)}
+      </span>
+    )
   }
 
   return (
@@ -87,15 +124,12 @@ export function VerificationHistory({
               className="p-3 bg-slate-100/40 dark:bg-slate-900/30 border border-border rounded-xl flex items-center justify-between gap-3 hover:border-primary/20 dark:hover:border-primary/30 transition-colors"
             >
               <div className="space-y-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  {item.status ? (
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-                  ) : (
-                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]" />
-                  )}
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {renderStatusIndicator(item)}
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate block max-w-[150px] md:max-w-[240px]">
                     {item.query}
                   </span>
+                  {renderStatusBadge(item)}
                 </div>
                 {item.numeroAttestation && (
                   <p className="text-[10px] text-muted-foreground font-semibold truncate block">

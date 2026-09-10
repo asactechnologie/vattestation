@@ -10,6 +10,13 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           status: false,
+          success: false,
+          est_couvert: false,
+          statut: {
+            code: "INTROUVABLE",
+            libelle: "Paramètre manquant",
+            motif: "Paramètre 'info' requis et doit être une chaîne.",
+          },
           message: "Paramètre 'info' requis et doit être une chaîne.",
           data: [],
         },
@@ -23,12 +30,21 @@ export async function POST(request: Request) {
     const context = new VerificationContext()
     const result = await context.verify(sanitizedInfo)
 
+    console.log("[Result] Data:::", result);
+
     return NextResponse.json(result)
   } catch (error: any) {
     console.error("Proxy verification error:", error)
     return NextResponse.json(
       {
         status: false,
+        success: false,
+        est_couvert: false,
+        statut: {
+          code: "INTROUVABLE",
+          libelle: "Erreur serveur",
+          motif: error.message || "Erreur lors de la communication avec le serveur d'ASAC.",
+        },
         message: error.message || "Erreur lors de la communication avec le serveur d'ASAC.",
         data: [],
       },

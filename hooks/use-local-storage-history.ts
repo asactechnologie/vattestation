@@ -1,12 +1,14 @@
 "use client"
 
 import { useState } from "react"
+import { AttestationStatusCode } from "@/lib/strategies/types"
 
 export interface HistoryItem {
   id: string
   query: string
   timestamp: number
   status: boolean
+  statusCode?: AttestationStatusCode
   message: string
   wasScanned?: boolean
   numeroAttestation?: string
@@ -48,14 +50,15 @@ export function useLocalStorageHistory() {
     status: boolean,
     message: string,
     responseData?: any,
-    wasScanned?: boolean
+    wasScanned?: boolean,
+    statusCode?: AttestationStatusCode
   ) => {
     // Generate a simple unique ID
     const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
-    // Extract useful fields if response succeeded
+    // Extract useful fields if response contains data
     let details: Partial<HistoryItem> = {}
-    if (status && responseData && Array.isArray(responseData) && responseData.length > 0) {
+    if (responseData && Array.isArray(responseData) && responseData.length > 0) {
       const item = responseData[0]
       details = {
         numeroAttestation: item.numero_attestation,
@@ -72,6 +75,7 @@ export function useLocalStorageHistory() {
       query,
       timestamp: Date.now(),
       status,
+      statusCode: statusCode || (status ? "VALIDE" : "INTROUVABLE"),
       message,
       wasScanned,
       ...details,
