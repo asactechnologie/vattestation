@@ -58,7 +58,7 @@
     "suspendueDesc": "Attestation suspendue par la compagnie d'assurance.",
     "annuleeDesc": "Attestation résiliée ou annulée.",
     "expireeDesc": "Date d'échéance dépassée.",
-    "a_venirDesc": "Attestation non encore en vigueur (date d'effet future).",
+    "a_venirDesc": "Attestation pas encore en vigueur (date d'effet future).",
     "introuvableDesc": "Véhicule non répertorié ou non assuré."
   },
   "result": {

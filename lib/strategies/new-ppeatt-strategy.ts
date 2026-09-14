@@ -89,7 +89,7 @@ function resolveCertificateStatus(
     if (now.getTime() < startDate.getTime()) {
       return {
         code: "A_VENIR",
-        libelle: "Attestation non encore en vigueur",
+        libelle: "Attestation pas encore en vigueur",
         motif: "Date d'effet future",
       }
     }
@@ -231,30 +231,40 @@ export class NewPpeattStrategy implements AttestationVerificationStrategy {
         }
       }
 
-      const normStartsAt = this.normalizeDate(item.starts_at)
-      const normEndsAt = this.normalizeDate(item.ends_at)
+      const normStartsAt = item.date_effet || this.normalizeDate(item.starts_at)
+      const normEndsAt = item.date_expiration || this.normalizeDate(item.ends_at)
 
-      const statusInfo = resolveCertificateStatus(
-        item.state,
-        item.child_certificate?.state,
-        normStartsAt,
-        normEndsAt,
-        now
-      )
+      const statusInfo: AttestationStatusInfo = (item.statut && item.statut.code)
+        ? {
+            code: item.statut.code as AttestationStatusCode,
+            libelle: item.statut.libelle || item.statut.code,
+            motif: item.statut.motif || null,
+          }
+        : resolveCertificateStatus(
+            item.state,
+            item.child_certificate?.state,
+            normStartsAt,
+            normEndsAt,
+            now
+          )
+
+      const isItemCovered = item.est_couvert !== undefined
+        ? Boolean(item.est_couvert)
+        : statusInfo.code === "VALIDE"
 
       return {
-        numero_attestation: item.reference || "",
-        numero_immatriculation: item.licence_plate || "",
-        nom_assure: item.insured_name || "",
-        nom_compagnie: item.organization_name || "",
-        marque_vehicule: item.vehicle_brand || "",
-        modele_vehicule: item.vehicle_model || "",
+        numero_attestation: item.numero_attestation || item.reference || "",
+        numero_immatriculation: item.numero_immatriculation || item.licence_plate || "",
+        nom_assure: item.nom_assure || item.insured_name || "",
+        nom_compagnie: item.nom_compagnie || item.organization_name || "",
+        marque_vehicule: item.marque_vehicule || item.vehicle_brand || "",
+        modele_vehicule: item.modele_vehicule || item.vehicle_model || "",
         date_effet: normStartsAt,
         date_expiration: normEndsAt,
         download_link: item.download_link || null,
         child_certificate: childCert,
         statut: statusInfo,
-        est_couvert: statusInfo.code === "VALIDE",
+        est_couvert: isItemCovered,
         state: item.state ? {
           name: typeof item.state === "object" ? item.state.name || "" : item.state,
           label: typeof item.state === "object" ? item.state.label || "" : item.state,
@@ -278,18 +288,28 @@ export class NewPpeattStrategy implements AttestationVerificationStrategy {
     })
 
     const selected = mappedData[0]
-    const isCovered = selected.est_couvert === true
+    const isCovered = resData.est_couvert !== undefined
+      ? Boolean(resData.est_couvert)
+      : selected.est_couvert === true
+
+    const rootStatut: AttestationStatusInfo = (resData.statut && resData.statut.code)
+      ? {
+          code: resData.statut.code as AttestationStatusCode,
+          libelle: resData.statut.libelle || resData.statut.code,
+          motif: resData.statut.motif || null,
+        }
+      : (selected.statut || {
+          code: isCovered ? "VALIDE" : "INTROUVABLE",
+          libelle: isCovered ? "Attestation valide" : "Statut indéterminé",
+          motif: null,
+        })
 
     return {
-      status: isCovered,
-      success: true,
+      status: resData.status !== undefined ? Boolean(resData.status) : isCovered,
+      success: resData.success !== undefined ? Boolean(resData.success) : true,
       est_couvert: isCovered,
-      statut: selected.statut || {
-        code: isCovered ? "VALIDE" : "INTROUVABLE",
-        libelle: isCovered ? "Attestation valide" : "Statut indéterminé",
-        motif: null,
-      },
-      message: resData.message || (isCovered ? "Attestation valide et en cours" : (selected.statut?.motif || selected.statut?.libelle || null)),
+      statut: rootStatut,
+      message: resData.message || (isCovered ? "Attestation valide et en cours" : (rootStatut.motif || rootStatut.libelle || null)),
       data: mappedData,
     }
   }
