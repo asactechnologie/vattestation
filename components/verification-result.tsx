@@ -505,18 +505,6 @@ export function VerificationResult({
                 <MessageCircle className="h-4 w-4 text-emerald-600" />
                 <span>WhatsApp</span>
               </button>
-
-              {certificateData.download_link && (
-                <a
-                  href={certificateData.download_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 py-2.5 text-xs font-bold text-slate-700 shadow-xs transition-all hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200"
-                >
-                  <Download className="h-4 w-4" />
-                  <span>{t("result.downloadCertificate")}</span>
-                </a>
-              )}
             </div>
 
             {/* WhatsApp Verification Panel in modal */}
