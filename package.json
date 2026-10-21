@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "export:pdf": "node scripts/export-pdf.cjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

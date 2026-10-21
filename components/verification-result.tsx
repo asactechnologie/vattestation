@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { generateSlug } from "@/lib/services/slug"
 import {
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   XCircle,
   Download,
@@ -22,6 +23,8 @@ import {
   X,
   Eye,
   MessageCircle,
+  ExternalLink,
+  ShieldCheck,
 } from "lucide-react"
 import { AsacWatermark } from "@/components/AsacWatermark"
 import CmrFlag from "@/components/CmrFlag"
@@ -66,6 +69,27 @@ export function VerificationResult({
     const botNumber = getWhatsAppBotNumber()
     const text = `${queryText}`
     return `https://wa.me/${botNumber}?text=${encodeURIComponent(text)}`
+  }
+
+  const getTransitionUrl = (plateQuery?: string) => {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_TRANSITION_URL ||
+      "https://eatt-transition.asac.cm/transformer"
+    try {
+      const url = new URL(baseUrl)
+      if (plateQuery && plateQuery.trim().length > 0) {
+        url.searchParams.set("licencePlate", plateQuery.trim().toUpperCase())
+      }
+      return url.toString()
+    } catch {
+      if (plateQuery && plateQuery.trim().length > 0) {
+        const separator = baseUrl.includes("?") ? "&" : "?"
+        return `${baseUrl}${separator}licencePlate=${encodeURIComponent(
+          plateQuery.trim().toUpperCase()
+        )}`
+      }
+      return baseUrl
+    }
   }
 
   const isCovered = Boolean(apiResponse?.est_couvert ?? apiResponse?.status)
@@ -985,27 +1009,115 @@ export function VerificationResult({
         </div>
       ) : (
         /* INVALID / NOT FOUND CERTIFICATE RESPONSE */
-        <div className="glass-card-invalid animate-in space-y-4 rounded-2xl border-l-4 border-rose-500 p-5 shadow-lg duration-300 fade-in-50 slide-in-from-bottom-5 md:p-6">
-          <div className="flex items-start gap-3">
-            <XCircle className="mt-0.5 h-6 w-6 shrink-0 text-rose-500" />
-            <div>
-              <div className="flex items-center gap-2">
-                <h4 className="text-base font-extrabold text-rose-800 dark:text-rose-400">
-                  {t("result.invalid")}
-                </h4>
-                {getStatusBadge("INTROUVABLE")}
+        <div className="space-y-4">
+          <div className="glass-card-invalid animate-in space-y-4 rounded-2xl border-l-4 border-rose-500 p-5 shadow-lg duration-300 fade-in-50 slide-in-from-bottom-5 md:p-6">
+            <div className="flex items-start gap-3">
+              <XCircle className="mt-0.5 h-6 w-6 shrink-0 text-rose-500" />
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-base font-extrabold text-rose-800 dark:text-rose-400">
+                    {t("result.invalid")}
+                  </h4>
+                  {getStatusBadge("INTROUVABLE")}
+                </div>
+                <p className="mt-1 text-xs font-semibold text-rose-700/80 dark:text-rose-400/80">
+                  {apiError || apiResponse?.message || t("result.invalidMessage")}
+                </p>
               </div>
-              <p className="mt-1 text-xs font-semibold text-rose-700/80 dark:text-rose-400/80">
-                {apiError || apiResponse?.message || t("result.invalidMessage")}
-              </p>
+            </div>
+
+            <div className="flex items-start gap-2 rounded-xl border border-rose-500/10 bg-rose-500/5 p-3">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-500" />
+              <div className="text-[10px] leading-relaxed font-semibold text-rose-600/90 dark:text-rose-400/90">
+                {t("status.introuvableDesc")} {t("result.introuvableHelp", "Veuillez vérifier l'immatriculation saisie ou vous assurer que le QR code scanné correspond à une attestation enregistrée auprès de l'ASAC.")}
+              </div>
             </div>
           </div>
 
-          <div className="flex items-start gap-2 rounded-xl border border-rose-500/10 bg-rose-500/5 p-3">
-            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-500" />
-            <div className="text-[10px] leading-relaxed font-semibold text-rose-600/90 dark:text-rose-400/90">
-              {t("status.introuvableDesc")}. Veuillez vérifier l&apos;immatriculation saisie ou vous assurer
-              que le QR code scanné correspond à une attestation enregistrée auprès de l&apos;ASAC.
+          {/* TRANSITION PAPER -> DIGITAL CTA CARD */}
+          <div className="relative overflow-hidden rounded-2xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-teal-500/10 p-5 shadow-xl transition-all duration-300 md:p-6 dark:border-emerald-500/20 dark:from-emerald-950/30 dark:via-background dark:to-teal-950/20">
+            {/* Ambient Background Glows */}
+            <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-emerald-500/15 blur-2xl dark:bg-emerald-400/10" />
+            <div className="pointer-events-none absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-teal-500/15 blur-2xl dark:bg-teal-400/10" />
+
+            <div className="relative space-y-4">
+              {/* Header: Badge & Title */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-emerald-500/15 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-700 shadow-xs dark:bg-emerald-500/30 dark:text-emerald-300">
+                    <Sparkles className="h-4.5 w-4.5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-extrabold text-slate-900 dark:text-white">
+                      {t("result.transitionTitle")}
+                    </h5>
+                    <p className="text-[11px] font-medium text-emerald-800/80 dark:text-emerald-300/80">
+                      {t("result.transitionSubtitle")}
+                    </p>
+                  </div>
+                </div>
+
+                <span className="inline-flex items-center self-start sm:self-auto gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                  <ShieldCheck className="h-3 w-3" />
+                  {t("result.transitionBadge")}
+                </span>
+              </div>
+
+              {/* Explanatory Description */}
+              <p className="text-xs font-medium leading-relaxed text-slate-600 dark:text-slate-300">
+                {t("result.transitionDescription")}
+              </p>
+
+              {/* 3 Step Pillars */}
+              <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-3">
+                <div className="flex items-start gap-2 rounded-xl border border-emerald-500/15 bg-white/70 p-2.5 backdrop-blur-xs dark:border-emerald-500/10 dark:bg-slate-900/60">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-[11px] font-bold text-emerald-700 dark:text-emerald-300">
+                    1
+                  </div>
+                  <span className="text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-300">
+                    {t("result.transitionStep1")}
+                  </span>
+                </div>
+
+                <div className="flex items-start gap-2 rounded-xl border border-emerald-500/15 bg-white/70 p-2.5 backdrop-blur-xs dark:border-emerald-500/10 dark:bg-slate-900/60">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-[11px] font-bold text-emerald-700 dark:text-emerald-300">
+                    2
+                  </div>
+                  <span className="text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-300">
+                    {t("result.transitionStep2")}
+                  </span>
+                </div>
+
+                <div className="flex items-start gap-2 rounded-xl border border-emerald-500/15 bg-white/70 p-2.5 backdrop-blur-xs dark:border-emerald-500/10 dark:bg-slate-900/60">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-[11px] font-bold text-emerald-700 dark:text-emerald-300">
+                    3
+                  </div>
+                  <span className="text-[11px] font-semibold leading-tight text-slate-700 dark:text-slate-300">
+                    {t("result.transitionStep3")}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <div className="pt-2">
+                <a
+                  href={getTransitionUrl(searchQuery)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-umami-event="click-transition-transform"
+                  data-umami-event-plate={searchQuery || "unknown"}
+                  className="group relative flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 px-5 py-3 text-center text-xs sm:text-sm font-bold text-white shadow-md shadow-emerald-700/20 transition-all duration-200 hover:from-emerald-500 hover:via-emerald-600 hover:to-teal-600 hover:shadow-lg hover:shadow-emerald-600/30 active:scale-[0.99]"
+                >
+                  <span>{t("result.transitionAction")}</span>
+                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  <ExternalLink className="h-3.5 w-3.5 opacity-80" />
+                </a>
+
+                <div className="mt-2.5 flex items-center justify-center gap-1.5 text-center text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                  <ShieldCheck className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                  <span>{t("result.transitionGuarantee")}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
