@@ -133,7 +133,7 @@
     "whyDesc": "Fraudsters may create fake verification portals mimicking the ASAC interface to trick you into believing an invalid certificate is authentic. Always follow these 4 security safeguards to establish the source of truth.",
     "rules": {
       "urlTitle": "1. Verify the Domain URL",
-      "urlDesc": "The official verification portal is located at https://vattestation.asac-cameroun.org (legacy URL links point to our official gateway). Make sure the address bar in your browser matches this URL.",
+      "urlDesc": "The official verification portal is located at https://vattestation.cm (https://vattestation.asac-cameroun.org also redirects to it). Make sure the address bar in your browser matches our official domains.",
       "watermarkTitle": "2. Official ASAC Watermark",
       "watermarkDesc": "The official ASAC logo is embedded securely in the background of valid attestation displays.",
       "logoTitle": "3. Dynamic Member Logo",
@@ -149,5 +149,80 @@
     "officialBot": "Official Bot Number",
     "only": "Only",
     "warning": "Warning"
+  },
+  "help": {
+    "title": "Help & Instructions",
+    "subtitle": "Everything you need to know to verify a motor insurance certificate in Cameroon.",
+    "back": "Back to verification",
+    "statusTitle": "Understanding the result",
+    "statusIntro": "Only the \"Valid\" status means the vehicle is covered today.",
+    "cta": "Verify a certificate now",
+    "howTitle": "How to verify an insurance certificate?",
+    "steps": [
+      {
+        "title": "Scan the QR code",
+        "desc": "Open the \"Scan QR Code\" tab and hold the QR code printed on the digital certificate in front of your phone camera."
+      },
+      {
+        "title": "Or enter the licence plate",
+        "desc": "Type the vehicle licence plate (e.g. LT123AA) or its chassis number (VIN) in the \"Entry\" tab."
+      },
+      {
+        "title": "Check the status",
+        "desc": "The result appears immediately: insurer, validity dates and coverage status. You can also receive it by SMS."
+      }
+    ],
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "question": "How do I verify a motor insurance certificate in Cameroon?",
+        "answer": "Go to vattestation.cm, then scan the certificate's QR code or enter the vehicle's licence plate or chassis number. The certificate status is displayed instantly."
+      },
+      {
+        "question": "Is certificate verification free?",
+        "answer": "Yes. Verification on V-Attestation is completely free. ASAC will never ask you for money to verify a certificate's authenticity."
+      },
+      {
+        "question": "What do the displayed statuses mean?",
+        "answer": "Only a \"Valid\" certificate means the vehicle is covered. \"Expired\", \"Suspended\", \"Cancelled\", \"Upcoming\" or \"Not found\" mean the vehicle is not covered today."
+      },
+      {
+        "question": "How can I spot a fake certificate or a fake verification site?",
+        "answer": "Always check that the address shown is vattestation.cm, that the official ASAC watermark appears on the result, and that SMS messages come from the \"ASAC\" sender. See our Security Center for more tips."
+      },
+      {
+        "question": "I have a paper certificate, can I get a digital one?",
+        "answer": "Yes. You can start the free conversion of your paper certificate into a secure digital certificate with a QR code at the ASAC Transition desk, with your paper certificate, vehicle registration card and ID card."
+      },
+      {
+        "question": "Can I verify a certificate via WhatsApp?",
+        "answer": "Yes. ASAC's official WhatsApp ChatBot lets you verify a certificate for free by simply sending the vehicle licence plate."
+      }
+    ]
+  },
+  "nav": {
+    "help": "Help",
+    "security": "Security & Anti-Fraud Center"
+  },
+  "notFound": {
+    "badge": "Error 404 · Page not found",
+    "title": "This page got lost along the way",
+    "subtitle": "The page you are looking for doesn't exist or has been moved.",
+    "description": "No worries: you can verify a certificate right below.",
+    "searchPlaceholder": "Licence plate or chassis",
+    "searchButton": "Verify",
+    "backHome": "Back to home",
+    "previousPage": "Previous page",
+    "popularLinks": "Useful destinations",
+    "verifyTitle": "Verify a certificate",
+    "verifyDesc": "Scan a QR code or enter a licence plate.",
+    "helpTitle": "Help & Instructions",
+    "helpDesc": "Verification steps, statuses and FAQ.",
+    "securityTitle": "Security Center",
+    "securityDesc": "Spot a fake certificate or a fake website.",
+    "asacTitle": "Official ASAC website",
+    "asacDesc": "The Association of Insurance Companies of Cameroon.",
+    "needHelp": "Think this is a mistake?",
+    "contactSupport": "Visit the help page"
   }
 }

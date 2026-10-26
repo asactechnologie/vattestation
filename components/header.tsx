@@ -1,16 +1,17 @@
 "use client"
 
-import { useTranslation } from "react-i18next"
 import { useTheme as useNextTheme } from "next-themes"
-import { Languages, Sun, Moon, ShieldAlert } from "lucide-react"
+import { Languages, Sun, Moon, ShieldAlert, CircleHelp } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { useHydratedTranslation } from "@/hooks/use-hydrated-translation"
 
 export function Header() {
-  const { t, i18n } = useTranslation()
+  const { t, i18n, isFr } = useHydratedTranslation()
   const { resolvedTheme, setTheme } = useNextTheme()
 
   const toggleLanguage = () => {
-    const nextLang = i18n.language === "fr" ? "en" : "fr"
+    const nextLang = isFr ? "en" : "fr"
     i18n.changeLanguage(nextLang)
   }
 
@@ -20,9 +21,13 @@ export function Header() {
         {/* Brand Logo */}
         <div className="flex items-center gap-2">
           <Link href={"/"} className="w-14 h-14 rounded-xl flex items-center justify-center">
-            <img
+            <Image
               src="/assets/logo_asac.png"
               alt="Logo ASAC"
+              width={56}
+              height={56}
+              fetchPriority="high"
+              loading="eager"
               className={"h-full w-auto object-center dark:brightness-0 dark:invert"}
             />
           </Link>
@@ -38,6 +43,17 @@ export function Header() {
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
+          {/* Help Link */}
+          <Link
+            href="/help"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-850 border border-border text-slate-700 dark:text-slate-300 transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+            title={t("nav.help")}
+            aria-label={t("nav.help")}
+          >
+            <CircleHelp className="w-4 h-4 text-primary" />
+            <span className="tracking-wide hidden sm:inline">{t("nav.help")}</span>
+          </Link>
+
           {/* Security Alert Link */}
           <Link
             href="/security"
@@ -46,7 +62,7 @@ export function Header() {
           >
             <ShieldAlert className="w-4 h-4 text-rose-500 animate-pulse" />
             <span className="tracking-wide hidden sm:inline">
-              {i18n.language === "fr" ? "Sécurité" : "Security"}
+              {isFr ? "Sécurité" : "Security"}
             </span>
           </Link>
 
@@ -57,7 +73,7 @@ export function Header() {
             aria-label={t("app.language")}
           >
             <Languages className="w-4 h-4 text-primary" />
-            <span className="tracking-wide">{i18n.language === "fr" ? "EN" : "FR"}</span>
+            <span className="tracking-wide">{isFr ? "EN" : "FR"}</span>
           </button>
 
           {/* Theme Selector */}

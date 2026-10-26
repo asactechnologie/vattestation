@@ -6,6 +6,15 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PwaInitializer } from "@/components/pwa-initializer"
 import { cn } from "@/lib/utils"
+import {
+  ASAC_URL,
+  baseOpenGraph,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_TITLE,
+  KEYWORDS,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/seo"
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -15,12 +24,43 @@ const fontMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "ASAC V-ATTESTATION",
-  description: "Check the validity of your insurance certificate (attestation) instantly.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: DEFAULT_DESCRIPTION,
+  keywords: KEYWORDS,
+  applicationName: SITE_NAME,
+  authors: [{ name: "ASAC", url: ASAC_URL }],
+  creator: "ASAC",
+  publisher: "ASAC",
+  category: "insurance",
+  formatDetection: { telephone: false },
+  openGraph: {
+    ...baseOpenGraph,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: "/",
+  },
+  // title/description fall back to og:* tags, so per-page overrides apply to X/Twitter too
+  twitter: { card: "summary_large_image" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.YANDEX_SITE_VERIFICATION,
+    other: process.env.BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION }
+      : undefined,
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "ASAC V-ATTESTATION",
+    title: SITE_NAME,
   },
 }
 
@@ -37,7 +77,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="fr"
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", manrope.variable)}
     >

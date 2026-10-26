@@ -133,7 +133,7 @@
     "whyDesc": "Les fraudeurs peuvent créer de faux portails de vérification imitant l'interface ASAC pour vous faire croire qu'une attestation invalide est authentique. Suivez ces 4 règles de sécurité pour valider la source de vérité.",
     "rules": {
       "urlTitle": "1. Vérifiez l'adresse internet (URL)",
-      "urlDesc": "L'adresse officielle est https://vattestation.asac-cameroun.org (les anciennes URL de redirection pointent également vers nos serveurs). Assurez-vous que l'adresse affichée dans la barre de votre navigateur correspond bien à nos domaines officiels.",
+      "urlDesc": "L'adresse officielle est https://vattestation.cm (l'adresse https://vattestation.asac-cameroun.org redirige également vers ce site). Assurez-vous que l'adresse affichée dans la barre de votre navigateur correspond bien à nos domaines officiels.",
       "watermarkTitle": "2. Filigrane officiel ASAC",
       "watermarkDesc": "Le logo officiel de l'ASAC apparaît en arrière-plan sous forme de filigrane sécurisé sur les attestations valides.",
       "logoTitle": "3. Logo dynamique de la compagnie",
@@ -149,5 +149,80 @@
     "officialBot": "Numéro Bot Officiel",
     "only": "Uniquement",
     "warning": "Alerte"
+  },
+  "help": {
+    "title": "Aide & Instructions",
+    "subtitle": "Tout ce qu'il faut savoir pour vérifier une attestation d'assurance automobile au Cameroun.",
+    "back": "Retour à la vérification",
+    "statusTitle": "Comprendre le résultat",
+    "statusIntro": "Seul le statut « Valide » signifie que le véhicule est couvert à la date du jour.",
+    "cta": "Vérifier une attestation maintenant",
+    "howTitle": "Comment vérifier une attestation d'assurance ?",
+    "steps": [
+      {
+        "title": "Scannez le QR code",
+        "desc": "Ouvrez l'onglet « Code QR » et présentez le QR code imprimé sur l'attestation digitale devant la caméra de votre téléphone."
+      },
+      {
+        "title": "Ou saisissez l'immatriculation",
+        "desc": "Entrez le numéro d'immatriculation du véhicule (ex : LT123AA) ou son numéro de châssis (VIN) dans l'onglet « Saisie »."
+      },
+      {
+        "title": "Consultez le statut",
+        "desc": "Le résultat s'affiche immédiatement : compagnie d'assurance, dates de validité et statut de couverture. Vous pouvez aussi le recevoir par SMS."
+      }
+    ],
+    "faqTitle": "Questions fréquentes",
+    "faq": [
+      {
+        "question": "Comment vérifier une attestation d'assurance automobile au Cameroun ?",
+        "answer": "Rendez-vous sur vattestation.cm, puis scannez le QR code de l'attestation ou saisissez le numéro d'immatriculation ou de châssis du véhicule. Le statut de l'attestation s'affiche instantanément."
+      },
+      {
+        "question": "La vérification d'une attestation est-elle payante ?",
+        "answer": "Non. La vérification sur V-Attestation est entièrement gratuite. L'ASAC ne vous demandera jamais d'argent pour vérifier l'authenticité d'une attestation."
+      },
+      {
+        "question": "Que signifient les statuts affichés ?",
+        "answer": "Seule une attestation « Valide » signifie que le véhicule est couvert. Les statuts « Expirée », « Suspendue », « Annulée », « À venir » ou « Introuvable » signifient que le véhicule n'est pas couvert à la date du jour."
+      },
+      {
+        "question": "Comment reconnaître une fausse attestation ou un faux site de vérification ?",
+        "answer": "Vérifiez toujours que l'adresse affichée est vattestation.cm, que le filigrane officiel ASAC apparaît sur le résultat et que les SMS proviennent de l'expéditeur « ASAC ». Consultez notre Centre de Sécurité pour plus de conseils."
+      },
+      {
+        "question": "J'ai une attestation papier, puis-je obtenir une attestation digitale ?",
+        "answer": "Oui. Vous pouvez initier gratuitement la transformation de votre attestation papier en attestation digitale sécurisée avec QR code auprès du Guichet Transition ASAC, avec votre attestation papier, votre carte grise et votre CNI."
+      },
+      {
+        "question": "Puis-je vérifier une attestation via WhatsApp ?",
+        "answer": "Oui. Le ChatBot WhatsApp officiel de l'ASAC permet de vérifier gratuitement une attestation en envoyant simplement l'immatriculation du véhicule."
+      }
+    ]
+  },
+  "nav": {
+    "help": "Aide",
+    "security": "Centre de Sécurité & Anti-Fraude"
+  },
+  "notFound": {
+    "badge": "Erreur 404 · Page introuvable",
+    "title": "Cette page s'est égarée en chemin",
+    "subtitle": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "description": "Pas d'inquiétude : vous pouvez vérifier une attestation directement ci-dessous.",
+    "searchPlaceholder": "Immatriculation ou châssis",
+    "searchButton": "Vérifier",
+    "backHome": "Retour à l'accueil",
+    "previousPage": "Page précédente",
+    "popularLinks": "Destinations utiles",
+    "verifyTitle": "Vérifier une attestation",
+    "verifyDesc": "Scannez un QR code ou saisissez une immatriculation.",
+    "helpTitle": "Aide & Instructions",
+    "helpDesc": "Étapes de vérification, statuts et questions fréquentes.",
+    "securityTitle": "Centre de Sécurité",
+    "securityDesc": "Reconnaître une fausse attestation ou un faux site.",
+    "asacTitle": "Site officiel ASAC",
+    "asacDesc": "L'Association des Sociétés d'Assurances du Cameroun.",
+    "needHelp": "Vous pensez qu'il s'agit d'une erreur ?",
+    "contactSupport": "Consultez l'aide"
   }
 }

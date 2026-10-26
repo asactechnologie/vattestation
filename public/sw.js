@@ -1,4 +1,4 @@
-const CACHE_NAME = "asac-verifier-cache-v1"
+const CACHE_NAME = "asac-verifier-cache-v3"
 const ASSETS_TO_CACHE = [
   "/",
   "/asac_icon_192.png",

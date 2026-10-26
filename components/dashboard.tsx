@@ -5,13 +5,11 @@ import { useTranslation } from "react-i18next"
 import "@/lib/i18n" // Initialize i18n
 import { useLocalStorageHistory } from "@/hooks/use-local-storage-history"
 import { useVerification } from "@/hooks/use-verification"
-import { QrScanner } from "@/components/qr-scanner"
-import { Header } from "@/components/header"
+import dynamic from "next/dynamic"
 import { ManualSearch } from "@/components/manual-search"
 import { VerificationHistory } from "@/components/verification-history"
 import { ResultViewport } from "@/components/result-viewport"
 import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
 
 import {
   QrCode,
@@ -23,6 +21,10 @@ import {
   FileCheck,
 } from "lucide-react"
 
+// Load the camera scanner (and html5-qrcode) only when the scan tab is opened
+const QrScanner = dynamic(() => import("@/components/qr-scanner").then((mod) => mod.QrScanner), {
+  ssr: false,
+})
 
 export function Dashboard() {
   const { t, i18n } = useTranslation()
@@ -113,29 +115,7 @@ export function Dashboard() {
   }
 
   return (
-    <div className="min-h-svh bg-background transition-colors duration-300 flex flex-col font-sans pb-12 overflow-x-hidden">
-      {/* Brand Header */}
-      <Header />
-
-      {/* Main Core Viewport Container */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-6 flex flex-col items-center space-y-8">
-        
-        {/* Intro Branding Header (Centered above the 50/50 split layout for premium symmetry) */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <div className="moving-border-badge">
-            <div className="moving-border-badge-inner">
-              <Sparkles className="w-3.5 h-3.5 animated-icon" />
-              <span>Cameroon Public Verification Hub</span>
-            </div>
-          </div>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground">
-            {t("app.title")}
-          </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto">
-            {t("app.subtitle")}
-          </p>
-        </div>
-
+    <>
         {/* Mobile View Selector Bar (visible only on small screens < lg) */}
         <div className="lg:hidden w-full max-w-md flex items-center justify-between bg-card border border-border p-1.5 rounded-2xl shadow-xs">
           <button
@@ -321,25 +301,6 @@ export function Dashboard() {
             </div>
           </div>
         </div>
-      </main>
-
-      {/* Footer Details */}
-      <footer className="mt-auto pt-12 text-center space-y-1">
-        <p className="text-[11px] text-muted-foreground font-semibold flex items-center justify-center gap-1.5 flex-wrap">
-          <span>{t("app.footer")}</span>
-          <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">|</span>
-          <Link
-            href="/security"
-            className="text-primary hover:underline font-bold transition-all text-[11px]"
-          >
-            {isFr ? "Centre de Sécurité & Anti-Fraude" : "Security & Anti-Fraud Center"}
-          </Link>
-        </p>
-        <p className="text-[10px] text-muted-foreground/60 hidden md:block">
-          {t("app.pressD")}
-        </p>
-      </footer>
-
-    </div>
+    </>
   )
 }
