@@ -78,6 +78,7 @@
     "details": "Détails de l'Attestation",
     "attestationNumber": "Numéro d'Attestation",
     "immatriculation": "Numéro d'Immatriculation",
+    "licencePlate": "Numéro d'immatriculation",
     "effectiveDate": "Date d'Effet",
     "expiryDate": "Date d'Expiration",
     "insuredName": "Nom de l'Assuré",

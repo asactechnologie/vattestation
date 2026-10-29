@@ -78,6 +78,7 @@
     "details": "Certificate Specifications",
     "attestationNumber": "Certificate Number",
     "immatriculation": "Registration Number",
+    "licencePlate": "Licence Plate",
     "effectiveDate": "Effective Date",
     "expiryDate": "Expiration Date",
     "insuredName": "Insured Name",

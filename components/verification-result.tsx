@@ -279,8 +279,8 @@ export function VerificationResult({
     const containerSizeClass = size === "lg" ? "h-16 w-16" : "h-10 w-10"
     const logoBoxClass =
       size === "lg"
-        ? "h-20 w-20 p-2.5 rounded-2xl border border-slate-200 bg-white shadow-md dark:border-slate-700 dark:bg-slate-800"
-        : "h-12 w-12 p-1.5 rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-700 dark:bg-slate-800"
+        ? "h-20 w-20 p-2 rounded-2xl border border-slate-200 bg-white shadow-md dark:border-slate-700 dark:bg-slate-800"
+        : "h-12 w-12 p-1 rounded-xl border border-slate-200 bg-white shadow-xs dark:border-slate-700 dark:bg-slate-800"
     const badgePosClass = size === "lg" ? "-right-1.5 -bottom-1.5 p-1" : "-right-1 -bottom-1 p-0.5"
     const miniIconClass = size === "lg" ? "h-5 w-5" : "h-4 w-4"
 
@@ -309,7 +309,7 @@ export function VerificationResult({
     return (
       <div className="relative shrink-0">
         {logo ? (
-          <div className={`flex items-center justify-center ${logoBoxClass}`}>
+          <div className={`flex items-center justify-center ${logoBoxClass} overflow-hidden`}>
             <img
               src={logo}
               alt={companyName || "Logo"}
@@ -432,15 +432,19 @@ export function VerificationResult({
 
               <div className="space-y-1">
                 <div className="flex items-center justify-center gap-2">
-                  <h4 className={`text-xl font-extrabold ${getHeaderTextColor(statusCode)}`}>
+                  <h4
+                    className={`text-xl font-extrabold ${getHeaderTextColor(statusCode)}`}
+                  >
                     {getHeaderTitle(statusCode)}
                   </h4>
                   {getStatusBadge(statusCode)}
                 </div>
-                <p className="text-sm font-semibold leading-relaxed text-slate-500 dark:text-slate-400">
+                <p className="text-sm leading-relaxed font-semibold text-slate-500 dark:text-slate-400">
                   {statusInfo?.motif ||
                     apiResponse.message ||
-                    (isCovered ? t("result.validMessage") : t("result.invalidMessage"))}
+                    (isCovered
+                      ? t("result.validMessage")
+                      : t("result.invalidMessage"))}
                 </p>
               </div>
 
@@ -450,8 +454,8 @@ export function VerificationResult({
                     statusCode === "SUSPENDUE"
                       ? "border-amber-500/20 bg-amber-500/10 text-amber-800 dark:text-amber-300"
                       : statusCode === "A_VENIR"
-                      ? "border-sky-500/20 bg-sky-500/10 text-sky-800 dark:text-sky-300"
-                      : "border-rose-500/20 bg-rose-500/10 text-rose-800 dark:text-rose-300"
+                        ? "border-sky-500/20 bg-sky-500/10 text-sky-800 dark:text-sky-300"
+                        : "border-rose-500/20 bg-rose-500/10 text-rose-800 dark:text-rose-300"
                   }`}
                 >
                   <AlertTriangle className="h-4 w-4 shrink-0" />
@@ -460,7 +464,8 @@ export function VerificationResult({
                     {statusCode === "ANNULEE" && t("status.annuleeDesc")}
                     {statusCode === "EXPIREE" && t("status.expireeDesc")}
                     {statusCode === "A_VENIR" && t("status.a_venirDesc")}
-                    {statusCode === "INTROUVABLE" && t("status.introuvableDesc")}
+                    {statusCode === "INTROUVABLE" &&
+                      t("status.introuvableDesc")}
                   </span>
                 </div>
               )}
@@ -468,13 +473,23 @@ export function VerificationResult({
 
             {/* Minimalist Details Card */}
             <div className="space-y-4 rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 dark:border-slate-800 dark:bg-slate-800/40">
+              {/* Item: Licence plate */}
+              <div className="flex items-center justify-between border-b border-border/60 pb-3">
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  <Car className="h-3.5 w-3.5 text-slate-400" />
+                  {t("result.licencePlate")}
+                </span>
+                <span className="text-sm font-bold text-slate-800 select-all dark:text-slate-100">
+                  {certificateData.numero_immatriculation}
+                </span>
+              </div>
               {/* Item: Number */}
               <div className="flex items-center justify-between border-b border-border/60 pb-3">
                 <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
                   <Shield className="h-3.5 w-3.5 text-slate-400" />
                   {t("result.attestationNumber")}
                 </span>
-                <span className="text-sm font-bold select-all text-slate-800 dark:text-slate-100">
+                <span className="text-sm font-bold text-slate-800 select-all dark:text-slate-100">
                   {certificateData.numero_attestation}
                 </span>
               </div>
@@ -491,7 +506,11 @@ export function VerificationResult({
                   </span>
                   {logoUrl && (
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded border border-slate-200/50 bg-white p-0.5 dark:bg-slate-800">
-                      <img src={logoUrl} alt="Logo" className="h-full w-full object-contain" />
+                      <img
+                        src={logoUrl}
+                        alt="Logo"
+                        className="h-full w-full object-contain"
+                      />
                     </div>
                   )}
                 </div>
