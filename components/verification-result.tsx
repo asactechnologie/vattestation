@@ -1070,9 +1070,6 @@ export function VerificationResult({
                     <h5 className="text-sm font-extrabold text-slate-900 dark:text-white">
                       {t("result.transitionTitle")}
                     </h5>
-                    <p className="text-[11px] font-medium text-emerald-800/80 dark:text-emerald-300/80">
-                      {t("result.transitionSubtitle")}
-                    </p>
                   </div>
                 </div>
 
