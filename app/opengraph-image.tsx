@@ -26,7 +26,7 @@ export default async function Image() {
       >
         <img src={logoSrc} width={260} height={260} alt="" />
         <div style={{ display: "flex", flexDirection: "column", gap: 24, flex: 1 }}>
-          <div style={{ fontSize: 34, fontWeight: 700, color: "#0a568c", letterSpacing: 4 }}>
+          <div style={{ fontSize: 34, fontWeight: 700, color: "#153A89", letterSpacing: 4 }}>
             V-ATTESTATION
           </div>
           <div style={{ fontSize: 60, fontWeight: 800, lineHeight: 1.1 }}>
@@ -35,7 +35,7 @@ export default async function Image() {
           <div style={{ fontSize: 28, color: "#475569" }}>
             QR code · Immatriculation · Châssis
           </div>
-          <div style={{ fontSize: 28, fontWeight: 700, color: "#0a568c" }}>vattestation.cm</div>
+          <div style={{ fontSize: 28, fontWeight: 700, color: "#153A89" }}>vattestation.cm</div>
         </div>
       </div>
     ),
